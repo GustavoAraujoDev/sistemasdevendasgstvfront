@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { Link } from 'react-router-dom';
 import Drawer from '@mui/material/Drawer';
 import List from '@mui/material/List';
@@ -10,6 +10,9 @@ import HomeIcon from '@mui/icons-material/Home';
 import StorefrontIcon from '@mui/icons-material/Storefront';
 import ReceiptIcon from '@mui/icons-material/Receipt'; // Substituí o ícone para representar vendas
 import PeopleIcon from '@mui/icons-material/People';
+import IconButton from "@mui/material/IconButton";
+import MenuIcon from '@mui/material/MenuIcon';
+import Divider from "@mui/material/Divider";
 
 function Sidebar() {
 
@@ -81,9 +84,6 @@ function Sidebar() {
       </ListItem>
     </List>
     <Divider />
-    <IconButton onClick={handleDrawerClose}>
-      <ChevronLeftIcon />
-    </IconButton>
   </Drawer>
   );
 }
