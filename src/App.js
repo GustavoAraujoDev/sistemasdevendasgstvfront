@@ -20,7 +20,7 @@ function App() {
         <Sidebar />
         <div style={{ flex: 1, overflowY: 'auto', padding: '20px', maxWidth: 'calc(100% - 250px)' }}>
           <Routes>
-            <Route path="/" element={<Home />} />
+            <Route path="/Home" element={<Home />} />
             <Route path="/ProductPage" element={<ProductsPage />} />
             <Route path="/CaixaPage" element={<CaixaPage />} />
             <Route path="/Vendas" element={<Vendas />} />
