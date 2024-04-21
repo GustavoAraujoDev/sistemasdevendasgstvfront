@@ -11,7 +11,7 @@ import StorefrontIcon from '@mui/icons-material/Storefront';
 import ReceiptIcon from '@mui/icons-material/Receipt'; // Substituí o ícone para representar vendas
 import PeopleIcon from '@mui/icons-material/People';
 import IconButton from "@mui/material/IconButton";
-import MenuIcon from '@mui/material/MenuIcon';
+import MenuIcon from '@mui/icons-material/Menu';
 import Divider from "@mui/material/Divider";
 
 function Sidebar() {
