@@ -52,7 +52,7 @@ function Sidebar() {
     </Toolbar>
     <Divider />
     <List>
-      <ListItem button component={Link} to="/Home" onClick={handleDrawerClose}>
+      <ListItem button component={Link} to="/" onClick={handleDrawerClose}>
         <ListItemIcon>
           <HomeIcon />
         </ListItemIcon>
