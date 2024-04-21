@@ -12,12 +12,13 @@ import 'react-toastify/dist/ReactToastify.css';
 
 function App() {
   return (
-<Router>
-      <ToastContainer />
-      <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
-        <Header />
-        <div style={{ display: 'flex', flexGrow: 1 }}>
-          <Sidebar />
+    <Router>
+    <ToastContainer />
+    <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
+      <Header />
+      <div style={{ display: 'flex', flexGrow: 1, overflowX: 'hidden' }}>
+        <Sidebar />
+        <div style={{ flex: 1, overflowY: 'auto', padding: '20px', maxWidth: 'calc(100% - 250px)' }}>
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/ProductPage" element={<ProductsPage />} />
@@ -27,7 +28,8 @@ function App() {
           </Routes>
         </div>
       </div>
-    </Router>
+    </div>
+  </Router>
   );
 }
 

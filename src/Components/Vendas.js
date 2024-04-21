@@ -117,9 +117,9 @@ function SalesPage() {
  console.log(endDate);
 
   return (
-    <div style={{ marginLeft: 20, marginRight: 20 }}>
-    <h1>Lista de Vendas</h1>
-    <Grid container spacing={2} alignItems="center">
+    <div style={{ margin: '20px auto', maxWidth: 1200 }}>
+    <h1 style={{ textAlign: 'center' }}>Lista de Vendas</h1>
+    <Grid container spacing={2} alignItems="center" justifyContent="center">
       <Grid item xs={12} sm={6} md={3}>
         <Typography variant="body1">De:</Typography>
         <DatePicker

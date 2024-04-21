@@ -110,7 +110,7 @@ function ProductsPage() {
     <Grid container justifyContent="center">
     <Grid item xs={12} md={10} lg={8}>
       <div style={{ marginTop: '20px' }}>
-        <h1 style={{ marginBottom: '20px', textAlign: 'center' }}>Lista de Produtos</h1>
+        <Typography variant="h4" align="center" gutterBottom>Lista de Produtos</Typography>
         <Button variant="contained" color="primary" startIcon={<AddIcon />} onClick={handleOpenAddDialog}>
           Adicionar Produto
         </Button>

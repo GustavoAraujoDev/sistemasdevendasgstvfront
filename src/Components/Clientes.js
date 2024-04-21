@@ -110,91 +110,91 @@ function ClientsPage() {
 
   return (
     <Grid container justifyContent="center">
-      <Grid item xs={12} md={10} lg={8}>
-        <div style={{ marginTop: '20px' }}>
-          <h1 style={{ marginBottom: '20px', textAlign: 'center' }}>Lista de Clientes</h1>
-          <Button variant="contained" color="primary" startIcon={<AddIcon />} onClick={handleOpenAddDialog}>
-            Adicionar Cliente
-          </Button>
-          <TableContainer component={Paper} style={{ marginTop: '20px' }}>
-            <Table aria-label="clientes">
-              <TableHead>
-                <TableRow>
-                  <TableCell>Nome</TableCell>
-                  <TableCell>Email</TableCell>
-                  <TableCell>CPF</TableCell>
-                  <TableCell>Telefone</TableCell>
-                  <TableCell>Ações</TableCell>
+    <Grid item xs={12} md={10} lg={8}>
+      <div style={{ marginTop: '20px' }}>
+        <h1 style={{ marginBottom: '20px', textAlign: 'center' }}>Lista de Clientes</h1>
+        <Button variant="contained" color="primary" startIcon={<AddIcon />} onClick={handleOpenAddDialog}>
+          Adicionar Cliente
+        </Button>
+        <TableContainer component={Paper} style={{ marginTop: '20px' }}>
+          <Table aria-label="clientes">
+            <TableHead>
+              <TableRow>
+                <TableCell>Nome</TableCell>
+                <TableCell>Email</TableCell>
+                <TableCell>CPF</TableCell>
+                <TableCell>Telefone</TableCell>
+                <TableCell>Ações</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {clients.map((client) => (
+                <TableRow key={client.id}>
+                  <TableCell>{client.nome}</TableCell>
+                  <TableCell>{client.email}</TableCell>
+                  <TableCell>{client.cpf}</TableCell>
+                  <TableCell>{client.telefone}</TableCell>
+                  <TableCell>
+                    <IconButton aria-label="editar" component={Link} to={`/clients/edit/${client.id}`} style={{ marginRight: '5px' }}>
+                      <EditIcon />
+                    </IconButton>
+                    <IconButton aria-label="excluir" onClick={() => handleDelete(client.id)}>
+                      <DeleteIcon />
+                    </IconButton>
+                  </TableCell>
                 </TableRow>
-              </TableHead>
-              <TableBody>
-                {clients.map((client) => (
-                  <TableRow key={client.id}>
-                    <TableCell>{client.nome}</TableCell>
-                    <TableCell>{client.email}</TableCell>
-                    <TableCell>{client.cpf}</TableCell>
-                    <TableCell>{client.telefone}</TableCell>
-                    <TableCell>
-                      <IconButton aria-label="editar" component={Link} to={`/clients/edit/${client.id}`} style={{ marginRight: '5px' }}>
-                        <EditIcon />
-                      </IconButton>
-                      <IconButton aria-label="excluir" onClick={() => handleDelete(client.id)}>
-                        <DeleteIcon />
-                      </IconButton>
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
-          <Dialog open={openAddDialog} onClose={handleCloseAddDialog}>
-            <DialogTitle>Adicionar Novo Cliente</DialogTitle>
-            <DialogContent>
-              <TextField
-                name="nome"
-                label="Nome"
-                value={dataToInsert.nome}
-                onChange={handleChange}
-                fullWidth
-                margin="normal"
-              />
-              <TextField
-                name="email"
-                label="Email"
-                value={dataToInsert.email}
-                onChange={handleChange}
-                fullWidth
-                margin="normal"
-              />
-              <TextField
-                name="cpf"
-                label="CPF"
-                value={dataToInsert.cpf}
-                onChange={handleChange}
-                fullWidth
-                margin="normal"
-              />
-              <TextField
-                name="telefone"
-                label="Telefone"
-                value={dataToInsert.telefone}
-                onChange={handleChange}
-                fullWidth
-                margin="normal"
-              />
-            </DialogContent>
-            <DialogActions>
-              <Button onClick={handleCloseAddDialog} color="secondary">
-                Cancelar
-              </Button>
-              <Button onClick={handleAddClient} color="primary">
-                Adicionar
-              </Button>
-            </DialogActions>
-          </Dialog>
-        </div>
-      </Grid>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+        <Dialog open={openAddDialog} onClose={handleCloseAddDialog}>
+          <DialogTitle>Adicionar Novo Cliente</DialogTitle>
+          <DialogContent>
+            <TextField
+              name="nome"
+              label="Nome"
+              value={dataToInsert.nome}
+              onChange={handleChange}
+              fullWidth
+              margin="normal"
+            />
+            <TextField
+              name="email"
+              label="Email"
+              value={dataToInsert.email}
+              onChange={handleChange}
+              fullWidth
+              margin="normal"
+            />
+            <TextField
+              name="cpf"
+              label="CPF"
+              value={dataToInsert.cpf}
+              onChange={handleChange}
+              fullWidth
+              margin="normal"
+            />
+            <TextField
+              name="telefone"
+              label="Telefone"
+              value={dataToInsert.telefone}
+              onChange={handleChange}
+              fullWidth
+              margin="normal"
+            />
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleCloseAddDialog} color="secondary">
+              Cancelar
+            </Button>
+            <Button onClick={handleAddClient} color="primary">
+              Adicionar
+            </Button>
+          </DialogActions>
+        </Dialog>
+      </div>
     </Grid>
+  </Grid>
   );
 }
 

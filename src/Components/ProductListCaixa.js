@@ -141,67 +141,67 @@ const Caixa = () => {
 
   return (
     <Container>
-      <Grid container spacing={2}>
-        <Grid item xs={12} sm={6}>
-          <Paper elevation={3} sx={{ padding: 2 }}>
-            <Typography variant="h5">Lista de Produtos</Typography>
-            <TextField
-              label="Filtrar por nome"
-              value={filtroNome}
-              onChange={(e) => setFiltroNome(e.target.value)}
-              fullWidth
-              margin="normal"
-            />
-            <List>
-              {filtrarProdutos().map((produto) => (
-                <ListItem key={produto.ProductID}>
-                  <ListItemText primary={produto.Nome} secondary={`R$ ${produto.Preco}`} />
-                  <Select
-                    label="Quantidade"
-                    value={Quantidade}
-                    onChange={(event) => setQuantidade(event.target.value)}
-                    disabled={produtosSelecionados[produto.ProductID]}
-                  >
-                    {[...Array(parseInt(produto.Quantidade)).keys()].map((q) => (
-                      <MenuItem key={q + 1} value={q + 1}>{q + 1}</MenuItem>
-                    ))}
-                  </Select>
-                  <IconButton onClick={() => adicionarAoCarrinho(produto, Quantidade)} edge="end" aria-label="Adicionar">
-                    <AddIcon />
+    <Grid container spacing={2}>
+      <Grid item xs={12} sm={6}>
+        <Paper elevation={3} sx={{ padding: 2 }}>
+          <Typography variant="h5">Lista de Produtos</Typography>
+          <TextField
+            label="Filtrar por nome"
+            value={filtroNome}
+            onChange={(e) => setFiltroNome(e.target.value)}
+            fullWidth
+            margin="normal"
+          />
+          <List>
+            {filtrarProdutos().map((produto) => (
+              <ListItem key={produto.ProductID}>
+                <ListItemText primary={produto.Nome} secondary={`R$ ${produto.Preco}`} />
+                <Select
+                  label="Quantidade"
+                  value={Quantidade}
+                  onChange={(event) => setQuantidade(event.target.value)}
+                  disabled={produtosSelecionados[produto.ProductID]}
+                >
+                  {[...Array(parseInt(produto.Quantidade)).keys()].map((q) => (
+                    <MenuItem key={q + 1} value={q + 1}>{q + 1}</MenuItem>
+                  ))}
+                </Select>
+                <IconButton onClick={() => adicionarAoCarrinho(produto, Quantidade)} edge="end" aria-label="Adicionar">
+                  <AddIcon />
+                </IconButton>
+              </ListItem>
+            ))}
+          </List>
+        </Paper>
+      </Grid>
+      <Grid item xs={12} sm={6}>
+        <Paper elevation={3} sx={{ padding: 2 }}>
+          <Typography variant="h5">Carrinho</Typography>
+          <List>
+            {carrinho.map((item) => (
+              <div key={item.produto.ProductID}>
+                <ListItem>
+                  <ListItemText primary={item.produto.Nome} secondary={`Quantidade: ${item.quantidade}`} />
+                  <ListItemText primary={`Total: R$ ${parseFloat(item.produto.Preco) * item.quantidade}`} />
+                  <IconButton onClick={() => removerDoCarrinho(item.produto.ProductID)} edge="end" aria-label="remover">
+                    <DeleteIcon />
                   </IconButton>
                 </ListItem>
-              ))}
-            </List>
-          </Paper>
-        </Grid>
-        <Grid item xs={12} sm={6}>
-          <Paper elevation={3} sx={{ padding: 2 }}>
-            <Typography variant="h5">Carrinho</Typography>
-            <List>
-              {carrinho.map((item) => (
-                <div key={item.produto.ProductID}>
-                  <ListItem>
-                    <ListItemText primary={item.produto.Nome} secondary={`Quantidade: ${item.quantidade}`} />
-                    <ListItemText primary={`Total: R$ ${parseFloat(item.produto.Preco) * item.quantidade}`} />
-                    <IconButton onClick={() => removerDoCarrinho(item.produto.ProductID)} edge="end" aria-label="remover">
-                      <DeleteIcon />
-                    </IconButton>
-                  </ListItem>
-                  <Divider />
-                </div>
-              ))}
-            </List>
-            <Box mt={2}>
-              <Typography variant="subtitle1">Valor Total do Carrinho: R$ {calcularTotal().toFixed(2)}</Typography>
-              <div>
-                <Button variant="contained" color="success" onClick={finalizarCompra} startIcon={<ShoppingCartIcon />}>Finalizar Compra</Button>
-                <Button variant="contained" color="info" onClick={() => setCarrinho([])}>Limpar Carrinho</Button>
+                <Divider />
               </div>
-            </Box>
-          </Paper>
-        </Grid>
+            ))}
+          </List>
+          <Box mt={2}>
+            <Typography variant="subtitle1">Valor Total do Carrinho: R$ {calcularTotal().toFixed(2)}</Typography>
+            <div>
+              <Button variant="contained" color="success" onClick={finalizarCompra} startIcon={<ShoppingCartIcon />}>Finalizar Compra</Button>
+              <Button variant="contained" color="info" onClick={() => setCarrinho([])}>Limpar Carrinho</Button>
+            </div>
+          </Box>
+        </Paper>
       </Grid>
-    </Container>
+    </Grid>
+  </Container>
   );
 };
 

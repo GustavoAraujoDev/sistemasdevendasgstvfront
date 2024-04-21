@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import Button from '@mui/material/Button';
 import Divider from '@mui/material/Divider';
+import { Grid, Typography, Paper } from '@mui/material';
 
 function Home() {
     const [VendasCount, setVendasCount] = useState(0);
@@ -74,31 +75,33 @@ function Home() {
     };
 
     return (
-        <div style={{ padding: '20px', color: '#333', fontFamily: 'Arial, sans-serif' }}>
-        <h1 style={{ color: '#555', marginBottom: '20px', textAlign: 'center' }}>Bem-vindo ao Nosso Aplicativo de Gerenciamento de Produtos!</h1>
-        <p style={{ fontSize: '16px', marginBottom: '30px', textAlign: 'center' }}>Aqui você pode gerenciar seus produtos de forma fácil e eficiente.</p>
-        <div className="overview" style={{ display: 'flex', flexDirection: 'column', boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.1)', borderRadius: '10px', padding: '20px', backgroundColor: '#f9f9f9', transition: 'box-shadow 0.3s ease-in-out' }}>
-            <div style={{ marginBottom: '20px', textAlign: 'center' }}>
-                <p style={{ fontSize: '24px', marginBottom: '10px', fontWeight: 'bold' }}>{VendasCount}</p>
-                <p style={{ fontSize: '16px', margin: 0 }}>Vendas</p>
-            </div>
-            <Divider style={{ margin: '10px' }} />
-            <div style={{ marginBottom: '20px', textAlign: 'center' }}>
-                <p style={{ fontSize: '24px', marginBottom: '10px', fontWeight: 'bold' }}>{ProdutosCount}</p>
-                <p style={{ fontSize: '16px', margin: 0 }}>Produtos</p>
-            </div>
-            <Divider style={{ margin: '10px' }} />
-            <div style={{ marginBottom: '20px', textAlign: 'center' }}>
-                <p style={{ fontSize: '24px', marginBottom: '10px', fontWeight: 'bold' }}>R$ {VendasTotal.toFixed(2)}</p>
-                <p style={{ fontSize: '16px', margin: 0 }}>Total de Vendas</p>
-            </div>
-            <Divider style={{ margin: '10px' }} />
-            <div style={{ marginBottom: '20px', textAlign: 'center' }}>
-                <p style={{ fontSize: '24px', marginBottom: '10px', fontWeight: 'bold' }}> {ClientesTotal}</p>
-                <p style={{ fontSize: '16px', margin: 0 }}>Clientes</p>
-            </div>
-        </div>
-    </div>
+        <Grid container justifyContent="center" spacing={3} style={{ padding: '20px', color: '#333', fontFamily: 'Arial, sans-serif' }}>
+        <Grid item xs={12} md={6}>
+            <Paper elevation={3} style={{ padding: '20px', backgroundColor: '#f9f9f9', borderRadius: '10px' }}>
+                <Typography variant="h4" align="center" gutterBottom>Bem-vindo ao Nosso Aplicativo de Gerenciamento de Produtos!</Typography>
+                <Typography variant="body1" align="center" style={{ marginBottom: '30px' }}>Aqui você pode gerenciar seus produtos de forma fácil e eficiente.</Typography>
+                <Divider style={{ margin: '20px 0' }} />
+                <Grid container spacing={3}>
+                    <Grid item xs={6}>
+                        <Typography variant="h5" align="center" gutterBottom>{VendasCount}</Typography>
+                        <Typography variant="body1" align="center" gutterBottom>Vendas</Typography>
+                    </Grid>
+                    <Grid item xs={6}>
+                        <Typography variant="h5" align="center" gutterBottom>{ProdutosCount}</Typography>
+                        <Typography variant="body1" align="center" gutterBottom>Produtos</Typography>
+                    </Grid>
+                    <Grid item xs={6}>
+                        <Typography variant="h5" align="center" gutterBottom>R$ {VendasTotal.toFixed(2)}</Typography>
+                        <Typography variant="body1" align="center" gutterBottom>Total de Vendas</Typography>
+                    </Grid>
+                    <Grid item xs={6}>
+                        <Typography variant="h5" align="center" gutterBottom>{ClientesTotal}</Typography>
+                        <Typography variant="body1" align="center" gutterBottom>Clientes</Typography>
+                    </Grid>
+                </Grid>
+            </Paper>
+        </Grid>
+    </Grid>
     );
 }
 
