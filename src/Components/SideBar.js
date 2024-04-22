@@ -31,10 +31,12 @@ function Sidebar() {
     <Drawer
     variant="permanent"
     sx={{
-      width: '100%',
+      width: '150px',
       flexShrink: 0,
       '& .MuiDrawer-paper': {
         width: '220px',
+        height: '500px',
+        marginTop: '64px',
       },
     }}
     open={open}

@@ -14,19 +14,19 @@ function App() {
   return (
 <Router>
       <ToastContainer />
-      <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
+      <div style={{ display: 'grid', }}>
         <Header />
-        <div style={{ display: 'flex', flexGrow: 1 }}>
-          <Sidebar />
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/ProductPage" element={<ProductsPage />} />
-            <Route path="/CaixaPage" element={<CaixaPage />} />
-            <Route path="/Vendas" element={<Vendas />} />
-            <Route path="/Clientes" element={<Clientes />} />
-          </Routes>
+        <div style={{ display: 'flex', flexGrow: 1, }}>
+          <Sidebar/>
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/ProductPage" element={<ProductsPage />} />
+              <Route path="/CaixaPage" element={<CaixaPage />} />
+              <Route path="/Vendas" element={<Vendas />} />
+              <Route path="/Clientes" element={<Clientes />} />
+            </Routes>
+          </div>
         </div>
-      </div>
     </Router>
   );
 }

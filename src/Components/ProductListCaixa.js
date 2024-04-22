@@ -140,8 +140,8 @@ const Caixa = () => {
   };
 
   return (
-    <Container>
-    <Grid container spacing={2}>
+    <Container style={{ marginLeft: '75px' }}>
+    <Grid container spacing={2} justifyContent='center'>
       <Grid item xs={12} sm={6}>
         <Paper elevation={3} sx={{ padding: 2 }}>
           <Typography variant="h5">Lista de Produtos</Typography>

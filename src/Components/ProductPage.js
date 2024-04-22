@@ -107,7 +107,7 @@ function ProductsPage() {
   };
 
   return (
-    <Grid container justifyContent="center">
+    <Grid container justifyContent="center" style={{ marginTop: '0px' }}>
     <Grid item xs={12} md={10} lg={8}>
       <div style={{ marginTop: '20px' }}>
         <Typography variant="h4" align="center" gutterBottom>Lista de Produtos</Typography>
