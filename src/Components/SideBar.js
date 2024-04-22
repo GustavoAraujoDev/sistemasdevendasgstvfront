@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import Drawer from '@mui/material/Drawer';
 import List from '@mui/material/List';
@@ -8,85 +8,85 @@ import ListItemText from '@mui/material/ListItemText';
 import Toolbar from '@mui/material/Toolbar';
 import HomeIcon from '@mui/icons-material/Home';
 import StorefrontIcon from '@mui/icons-material/Storefront';
-import ReceiptIcon from '@mui/icons-material/Receipt'; // Substituí o ícone para representar vendas
+import ReceiptIcon from '@mui/icons-material/Receipt';
 import PeopleIcon from '@mui/icons-material/People';
 import IconButton from "@mui/material/IconButton";
 import MenuIcon from '@mui/icons-material/Menu';
 import Divider from "@mui/material/Divider";
+import useMediaQuery from '@mui/material/useMediaQuery';
+import useTheme from '@mui/material/styles/useTheme';
 
 function Sidebar() {
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm')); // Verifica se é uma tela móvel (menor que 'sm')
+  const [open, setOpen] = useState(!isMobile); // Define o estado inicial do Drawer com base na tela
 
-  const [open, setOpen] = useState(false);
-
-  const handleDrawerOpen = () => {
-    setOpen(true);
+  const handleDrawerToggle = () => {
+    setOpen(!open);
   };
-
-  const handleDrawerClose = () => {
-    setOpen(false);
-  };
-
 
   return (
-    <Drawer
-    variant="permanent"
-    sx={{
-      width: '150px',
-      flexShrink: 0,
-      '& .MuiDrawer-paper': {
-        width: '220px',
-        height: '500px',
-        marginTop: '64px',
-      },
-    }}
-    open={open}
-  >
-    <Toolbar>
-      <IconButton
-        color="inherit"
-        aria-label="open drawer"
-        onClick={handleDrawerOpen}
-        edge="start"
-        sx={{ mr: 2, ...(open && { display: 'none' }) }}
+    <>
+      {isMobile && (
+        <Toolbar>
+          <IconButton
+            color="inherit"
+            aria-label="open drawer"
+            onClick={handleDrawerToggle}
+            edge="start"
+          >
+            <MenuIcon />
+          </IconButton>
+        </Toolbar>
+      )}
+      <Drawer
+        variant={isMobile ? "temporary" : "permanent"} // Define o tipo de Drawer com base na tela
+        open={open}
+        onClose={handleDrawerToggle}
+        sx={{
+          width: '220px',
+          flexShrink: 0,
+          ...(isMobile && { '& .MuiDrawer-paper': { width: '220px' } }), // Ajusta a largura do Drawer para dispositivos móveis
+          ...(isMobile ? {} : { '& .MuiDrawer-paper': { width: '220px', marginTop: '64px' } }), // Ajusta a margem esquerda para dispositivos maiores
+        }}
+
       >
-        <MenuIcon />
-      </IconButton>
-    </Toolbar>
-    <Divider />
-    <List>
-      <ListItem button component={Link} to="/" onClick={handleDrawerClose}>
-        <ListItemIcon>
-          <HomeIcon />
-        </ListItemIcon>
-        <ListItemText primary="Home" />
-      </ListItem>
-      <ListItem button component={Link} to="/ProductPage" onClick={handleDrawerClose}>
-        <ListItemIcon>
-          <StorefrontIcon />
-        </ListItemIcon>
-        <ListItemText primary="Produtos" />
-      </ListItem>
-      <ListItem button component={Link} to="/CaixaPage" onClick={handleDrawerClose}>
-        <ListItemIcon>
-          <ReceiptIcon />
-        </ListItemIcon>
-        <ListItemText primary="Caixa" />
-      </ListItem>
-      <ListItem button component={Link} to="/Vendas" onClick={handleDrawerClose}>
-        <ListItemIcon>
-          <ReceiptIcon />
-        </ListItemIcon>
-        <ListItemText primary="Vendas" />
-      </ListItem>
-      <ListItem button component={Link} to="/Clientes" onClick={handleDrawerClose}>
-        <ListItemIcon>
-          <PeopleIcon />
-        </ListItemIcon>
-        <ListItemText primary="Clientes" />
-      </ListItem>
-    </List>
-    <Divider />
-  </Drawer>
+        <Divider />
+        <List>
+          <ListItem button component={Link} to="/" onClick={handleDrawerToggle}>
+            <ListItemIcon>
+              <HomeIcon />
+            </ListItemIcon>
+            <ListItemText primary="Home" />
+          </ListItem>
+          <ListItem button component={Link} to="/ProductPage" onClick={handleDrawerToggle}>
+            <ListItemIcon>
+              <StorefrontIcon />
+            </ListItemIcon>
+            <ListItemText primary="Produtos" />
+          </ListItem>
+          <ListItem button component={Link} to="/CaixaPage" onClick={handleDrawerToggle}>
+            <ListItemIcon>
+              <ReceiptIcon />
+            </ListItemIcon>
+            <ListItemText primary="Caixa" />
+          </ListItem>
+          <ListItem button component={Link} to="/Vendas" onClick={handleDrawerToggle}>
+            <ListItemIcon>
+              <ReceiptIcon />
+            </ListItemIcon>
+            <ListItemText primary="Vendas" />
+          </ListItem>
+          <ListItem button component={Link} to="/Clientes" onClick={handleDrawerToggle}>
+            <ListItemIcon>
+              <PeopleIcon />
+            </ListItemIcon>
+            <ListItemText primary="Clientes" />
+          </ListItem>
+        </List>
+        <Divider />
+      </Drawer>
+    </>
   );
 }
 
