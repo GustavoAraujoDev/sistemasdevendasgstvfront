@@ -140,9 +140,9 @@ const Caixa = () => {
   };
 
   return (
-    <Container style={{ marginLeft: '75px' }}>
+    <Container style={{ marginLeft: '75px'}}>
     <Grid container spacing={2} justifyContent='center'>
-      <Grid item xs={12} sm={6}>
+      <Grid item xs={12} sm={6} color='#fbf8f9' backgroundColor= '#942a68'>
         <Paper elevation={3} sx={{ padding: 2 }}>
           <Typography variant="h5">Lista de Produtos</Typography>
           <TextField
@@ -174,7 +174,7 @@ const Caixa = () => {
           </List>
         </Paper>
       </Grid>
-      <Grid item xs={12} sm={6}>
+      <Grid item xs={12} sm={6} color='#fbf8f9' backgroundColor= '#942a68'>
         <Paper elevation={3} sx={{ padding: 2 }}>
           <Typography variant="h5">Carrinho</Typography>
           <List>
@@ -194,8 +194,8 @@ const Caixa = () => {
           <Box mt={2}>
             <Typography variant="subtitle1">Valor Total do Carrinho: R$ {calcularTotal().toFixed(2)}</Typography>
             <div>
-              <Button variant="contained" color="success" onClick={finalizarCompra} startIcon={<ShoppingCartIcon />}>Finalizar Compra</Button>
-              <Button variant="contained" color="info" onClick={() => setCarrinho([])}>Limpar Carrinho</Button>
+              <Button variant="contained" color="#fec201" onClick={finalizarCompra} startIcon={<ShoppingCartIcon />}>Finalizar Compra</Button>
+              <Button variant="contained" color="#fec201" onClick={() => setCarrinho([])}>Limpar Carrinho</Button>
             </div>
           </Box>
         </Paper>

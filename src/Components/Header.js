@@ -5,14 +5,14 @@ import Typography from '@mui/material/Typography';
 import Avatar from '@mui/material/Avatar';
 
 function Header() {
-  const imageUrl = 'https://th.bing.com/th/id/OIP.20bkTgCDmaM6MwxUec1ojgHaE8?rs=1&pid=ImgDetMain'; // Substitua com sua URL de imagem
+  const imageUrl = 'https://www.agenciam9.com.br/propaganda/grandes/Logomarca-Moda-Roupa-Infantil-e-Beb%C3%AA.png'; // Substitua com sua URL de imagem
 
   return (
-    <AppBar position="static" elevation={0} style={{ backgroundColor: '#fff', color: '#333' }}>
+    <AppBar position="static" elevation={0} style={{ backgroundColor: '#942a68', color: '#fbf8f9' }}>
       <Toolbar>
         <Avatar alt="Logo" src={imageUrl} sx={{ marginRight: '10px', width: 50, height: 50, boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.1)' }} />
         <Typography variant="h6" component="div" sx={{ flexGrow: 1, fontWeight: 'bold' }}>
-          BaBy USA
+          Mania Kids
         </Typography>
       </Toolbar>
     </AppBar>

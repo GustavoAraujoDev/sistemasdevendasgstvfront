@@ -28,6 +28,7 @@ function ProductsPage() {
     Descricao: "",
     Preco: "",
     Quantidade: "",
+    PrecoVenda: "",
   });
 
   const handleOpenAddDialog = () => {
@@ -96,6 +97,7 @@ function ProductsPage() {
         Descricao: "",
         Preco: "",
         Quantidade: "",
+        PrecoVenda: "",
     });
   };
 
@@ -168,6 +170,14 @@ function ProductsPage() {
               name="Preco"
               label="Preço"
               value={dataToInsert.Preco}
+              onChange={handleChange}
+              fullWidth
+              margin="normal"
+            />
+            <TextField
+              name="PrecoVenda"
+              label="Preço de Venda"
+              value={dataToInsert.PrecoVenda}
               onChange={handleChange}
               fullWidth
               margin="normal"

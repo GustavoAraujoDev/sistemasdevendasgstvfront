@@ -75,9 +75,9 @@ function Home() {
     };
 
     return (
-        <Grid container justifyContent="center" spacing={3} style={{color: '#333', fontFamily: 'Arial, sans-serif' }}>
+        <Grid container justifyContent="center" spacing={3} style={{color: '#fbf8f9', fontFamily: 'Arial, sans-serif' }}>
         <Grid item xs={12} md={6}>
-            <Paper elevation={3} style={{ backgroundColor: '#f9f9f9', borderRadius: '10px' }}>
+            <Paper elevation={3} style={{ backgroundColor: '#942a68', borderRadius: '15px', color: '#fbf8f9' }}>
                 <Typography variant="h4" align="center" gutterBottom>Bem-vindo ao Nosso Aplicativo de Gerenciamento de Produtos!</Typography>
                 <Typography variant="body1" align="center" style={{ marginBottom: '30px' }}>Aqui você pode gerenciar seus produtos de forma fácil e eficiente.</Typography>
                 <Divider style={{ margin: '20px 0' }} />
