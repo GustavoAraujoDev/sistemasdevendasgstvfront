@@ -1,4 +1,4 @@
-import React, { useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import { toast } from "react-toastify";
 import { Link } from 'react-router-dom';
 import Button from '@mui/material/Button';
@@ -23,6 +23,7 @@ import { Grid, Typography } from '@mui/material';
 function ProductsPage() {
   const [products, setProducts] = useState([]);
   const [openAddDialog, setOpenAddDialog] = useState(false);
+  const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
   const [dataToInsert, setDataToInsert] = useState({
     Nome: "",
     Descricao: "",
@@ -30,13 +31,20 @@ function ProductsPage() {
     Quantidade: "",
     PrecoVenda: "",
   });
+  const [productIdToDelete, setProductIdToDelete] = useState(null);
 
   const handleOpenAddDialog = () => {
-    setOpenAddDialog(true); 
+    setOpenAddDialog(true);
   };
 
   const handleCloseAddDialog = () => {
     setOpenAddDialog(false);
+  };
+
+  
+
+  const handleCloseDeleteDialog = () => {
+    setOpenDeleteDialog(false);
   };
 
   useEffect(() => {
@@ -49,28 +57,27 @@ function ProductsPage() {
         console.error(err);
       });
   }, []);
-  console.log(products)
 
   const handleDelete = (id) => {
-    console.log(id);
-    // Pergunta se temos certeza de que desejamos excluir as informaçõe.
-    /* eslint-disable no-restricted-globals */
-    if (confirm("Tem certeza que deseja excluir estas informações?")) {
-      // Se confirmar a pergunta anterior, envia as informações para o backend.
-      console.log("Informação excluída");
-      fetch("https://sistemasdevendasgstvback.onrender.com/Produtos", {
-        method: "DELETE",
-        body: JSON.stringify({
-          ProductID: id
-        }),
-        headers: { "Content-Type": "application/json" },
-      });
-      // Atualiza a página para atualizar os dados do bd.
-      window.location.reload();
-      /* eslint-disable no-restricted-globals */
-    } else {
-      console.log("Pedido de exclusão cancelado.");
-    }
+    setProductIdToDelete(id);
+    setOpenDeleteDialog(true);
+  };
+
+  const handleDeleteConfirmed = () => {
+    setOpenDeleteDialog(false);
+
+    fetch("https://sistemasdevendasgstvback.onrender.com/Produtos", {
+      method: "DELETE",
+      body: JSON.stringify({
+        ProductID: productIdToDelete
+      }),
+      headers: { "Content-Type": "application/json" },
+    }).then(() => {
+      toast.success('Produto excluído com sucesso');
+      setProducts(products.filter(product => product.ProductID !== productIdToDelete));
+    }).catch((error) => {
+      console.error("Error:", error);
+    });
   };
 
   const handleAddProduct = (e) => {
@@ -82,21 +89,21 @@ function ProductsPage() {
     .then(() => {
       toast.success('Produto cadastrado com sucesso');
       setProducts([...products, dataToInsert]);
-      clearForm(); // Limpar campos após o envio
+      clearForm();
       handleCloseAddDialog();
     })
     .catch((error) => console.error("Error:", error));
     
-    e.preventDefault(); // Evitar recarregar a página
+    e.preventDefault();
   };
 
   const clearForm = () => {
     setDataToInsert({
-        Nome: "",
-        Descricao: "",
-        Preco: "",
-        Quantidade: "",
-        PrecoVenda: "",
+      Nome: "",
+      Descricao: "",
+      Preco: "",
+      Quantidade: "",
+      PrecoVenda: "",
     });
   };
 
@@ -109,101 +116,116 @@ function ProductsPage() {
 
   return (
     <Grid container justifyContent="center" style={{ marginTop: '0px' }}>
-    <Grid item xs={12} md={10} lg={8}>
-      <div style={{ marginTop: '20px' }}>
-        <Typography variant="h4" align="center" gutterBottom>Lista de Produtos</Typography>
-        <Button variant="contained" color="primary" startIcon={<AddIcon />} onClick={handleOpenAddDialog}>
-          Adicionar Produto
-        </Button>
-        <TableContainer component={Paper} style={{ marginTop: '20px' }}>
-          <Table>
-            <TableHead>
-              <TableRow>
-                <TableCell>Nome</TableCell>
-                <TableCell>Descrição</TableCell>
-                <TableCell>Preço</TableCell>
-                <TableCell>PreçoVenda</TableCell>
-                <TableCell>Quantidade</TableCell>
-                <TableCell>Ações</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {products.map((product) => (
-                <TableRow key={product.ProductID}>
-                  <TableCell>{product.Nome}</TableCell>
-                  <TableCell>{product.Descricao}</TableCell>
-                  <TableCell>R$ {product.Preco}</TableCell>
-                  <TableCell>R$ {product.PrecoVenda}</TableCell>
-                  <TableCell>{product.Quantidade}</TableCell>
-                  <TableCell>
-                    <IconButton aria-label="editar" component={Link} to={`/products/edit/${product.ProductID}`} style={{ marginRight: '5px' }}>
-                      <EditIcon />
-                    </IconButton>
-                    <IconButton aria-label="excluir" onClick={() => handleDelete(product.ProductID)}>
-                      <DeleteIcon />
-                    </IconButton>
-                  </TableCell>
+      <Grid item xs={12} md={10} lg={8}>
+        <div style={{ marginTop: '20px' }}>
+          <Typography variant="h4" align="center" gutterBottom>Lista de Produtos</Typography>
+          <Button variant="contained" color="primary" startIcon={<AddIcon />} onClick={handleOpenAddDialog}>
+            Adicionar Produto
+          </Button>
+          <TableContainer component={Paper} style={{ marginTop: '20px' }}>
+            <Table>
+              <TableHead>
+                <TableRow>
+                  <TableCell>Nome</TableCell>
+                  <TableCell>Descrição</TableCell>
+                  <TableCell>Preço</TableCell>
+                  <TableCell>PreçoVenda</TableCell>
+                  <TableCell>Quantidade</TableCell>
+                  <TableCell>Ações</TableCell>
                 </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
-        <Dialog open={openAddDialog} onClose={handleCloseAddDialog}>
-          <DialogTitle>Adicionar Novo Produto</DialogTitle>
-          <DialogContent>
-            <TextField
-              name="Nome"
-              label="Nome"
-              value={dataToInsert.Nome}
-              onChange={handleChange}
-              fullWidth
-              margin="normal"
-            />
-            <TextField
-              name="Descricao"
-              label="Descrição"
-              value={dataToInsert.Descricao}
-              onChange={handleChange}
-              fullWidth
-              margin="normal"
-            />
-            <TextField
-              name="Preco"
-              label="Preço"
-              value={dataToInsert.Preco}
-              onChange={handleChange}
-              fullWidth
-              margin="normal"
-            />
-            <TextField
-              name="PrecoVenda"
-              label="Preço de Venda"
-              value={dataToInsert.PrecoVenda}
-              onChange={handleChange}
-              fullWidth
-              margin="normal"
-            />
-            <TextField
-              name="Quantidade"
-              label="Quantidade"
-              value={dataToInsert.Quantidade}
-              onChange={handleChange}
-              fullWidth
-              margin="normal"
-            />
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={handleCloseAddDialog} color="secondary">
-              Cancelar
-            </Button>
-            <Button onClick={handleAddProduct} color="primary">
-              Adicionar
-            </Button>
-          </DialogActions>
-        </Dialog>
-      </div>
+              </TableHead>
+              <TableBody>
+                {products.map((product) => (
+                  <TableRow key={product.ProductID}>
+                    <TableCell>{product.Nome}</TableCell>
+                    <TableCell>{product.Descricao}</TableCell>
+                    <TableCell>R$ {product.Preco}</TableCell>
+                    <TableCell>R$ {product.PrecoVenda}</TableCell>
+                    <TableCell>{product.Quantidade}</TableCell>
+                    <TableCell>
+                      <IconButton aria-label="editar" component={Link} to={`/products/edit/${product.ProductID}`} style={{ marginRight: '5px' }}>
+                        <EditIcon />
+                      </IconButton>
+                      <IconButton aria-label="excluir" onClick={() => handleDelete(product.ProductID)}>
+                        <DeleteIcon />
+                      </IconButton>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+          <Dialog open={openAddDialog} onClose={handleCloseAddDialog}>
+            <DialogTitle>Adicionar Novo Produto</DialogTitle>
+            <DialogContent>
+              <TextField
+                name="Nome"
+                label="Nome"
+                value={dataToInsert.Nome}
+                onChange={handleChange}
+                fullWidth
+                margin="normal"
+              />
+              <TextField
+                name="Descricao"
+                label="Descrição"
+                value={dataToInsert.Descricao}
+                onChange={handleChange}
+                fullWidth
+                margin="normal"
+              />
+              <TextField
+                name="Preco"
+                label="Preço"
+                value={dataToInsert.Preco}
+                onChange={handleChange}
+                fullWidth
+                margin="normal"
+              />
+              <TextField
+                name="PrecoVenda"
+                label="Preço de Venda"
+                value={dataToInsert.PrecoVenda}
+                onChange={handleChange}
+                fullWidth
+                margin="normal"
+              />
+              <TextField
+                name="Quantidade"
+                label="Quantidade"
+                value={dataToInsert.Quantidade}
+                onChange={handleChange}
+                fullWidth
+                margin="normal"
+              />
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={handleCloseAddDialog} color="secondary">
+                Cancelar
+              </Button>
+              <Button onClick={handleAddProduct} color="primary">
+                Adicionar
+              </Button>
+            </DialogActions>
+          </Dialog>
+
+          <Dialog open={openDeleteDialog} onClose={handleCloseDeleteDialog}>
+            <DialogTitle>Confirmar Exclusão</DialogTitle>
+            <DialogContent>
+              Tem certeza que deseja excluir este produto?
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={handleCloseDeleteDialog} color="secondary">
+                Cancelar
+              </Button>
+              <Button onClick={handleDeleteConfirmed} color="primary">
+                Excluir
+              </Button>
+            </DialogActions>
+          </Dialog>
+        </div>
+      </Grid>
     </Grid>
-  </Grid>
   );
 }
 
