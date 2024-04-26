@@ -92,37 +92,37 @@ function Home() {
     };
 
     return (
-        <Grid container justifyContent="center" spacing={3} style={{color: '#fbf8f9', fontFamily: 'Arial, sans-serif' }}>
-        <Grid item xs={12} md={6}>
-            <Paper elevation={3} style={{ backgroundColor: '#942a68', borderRadius: '15px', color: '#fbf8f9' }}>
-                <Typography variant="h4" align="center" gutterBottom>Bem-vindo ao Nosso Aplicativo de Gerenciamento de Produtos!</Typography>
-                <Typography variant="body1" align="center" style={{ marginBottom: '30px' }}>Aqui você pode gerenciar seus produtos de forma fácil e eficiente.</Typography>
-                <Divider style={{ margin: '20px 0' }} />
-                <Grid container spacing={3}>
-                    <Grid item xs={6}>
-                        <Typography variant="h5" align="center" gutterBottom>{VendasCount}</Typography>
-                        <Typography variant="body1" align="center" gutterBottom>Vendas</Typography>
+        <Grid container justifyContent="center" alignItems="center" spacing={3} style={{color: '#fbf8f9', fontFamily: 'Arial, sans-serif' }}>
+            <Grid item xs={12} md={6}>
+                <Paper elevation={3} style={{ backgroundColor: '#942a68', borderRadius: '15px', color: '#fbf8f9' }}>
+                    <Typography variant="h4" align="center" gutterBottom>Bem-vindo ao Nosso Aplicativo de Gerenciamento de Produtos!</Typography>
+                    <Typography variant="body1" align="center" style={{ marginBottom: '30px' }}>Aqui você pode gerenciar seus produtos de forma fácil e eficiente.</Typography>
+                    <Divider style={{ margin: '20px 0' }} />
+                    <Grid container spacing={3}>
+                        <Grid item xs={12} sm={6}>
+                            <Typography variant="h5" align="center" gutterBottom>{VendasCount}</Typography>
+                            <Typography variant="body1" align="center" gutterBottom>Vendas</Typography>
+                        </Grid>
+                        <Grid item xs={12} sm={6}>
+                            <Typography variant="h5" align="center" gutterBottom>{ProdutosCount}</Typography>
+                            <Typography variant="body1" align="center" gutterBottom>Produtos</Typography>
+                        </Grid>
+                        <Grid item xs={12} sm={6}>
+                            <Typography variant="h5" align="center" gutterBottom>R$ {typeof ProdutosTotal === 'number' ? ProdutosTotal.toFixed(2) : '0.00'}</Typography>
+                            <Typography variant="body1" align="center" gutterBottom>Total de Produtos</Typography>
+                        </Grid>
+                        <Grid item xs={12} sm={6}>
+                            <Typography variant="h5" align="center" gutterBottom>R$ {VendasTotal.toFixed(2)}</Typography>
+                            <Typography variant="body1" align="center" gutterBottom>Total de Vendas</Typography>
+                        </Grid>
+                        <Grid item xs={12} sm={6}>
+                            <Typography variant="h5" align="center" gutterBottom>{ClientesTotal}</Typography>
+                            <Typography variant="body1" align="center" gutterBottom>Clientes</Typography>
+                        </Grid>
                     </Grid>
-                    <Grid item xs={6}>
-                        <Typography variant="h5" align="center" gutterBottom>{ProdutosCount}</Typography>
-                        <Typography variant="body1" align="center" gutterBottom>Produtos</Typography>
-                    </Grid>
-                    <Grid item xs={6}>
-                        <Typography variant="h5" align="center" gutterBottom> R$ {typeof ProdutosTotal === 'number' ? ProdutosTotal.toFixed(2) : '0.00'}</Typography>
-                        <Typography variant="body1" align="center" gutterBottom>Total de Produtos</Typography>
-                    </Grid>
-                    <Grid item xs={6}>
-                        <Typography variant="h5" align="center" gutterBottom>R$ {VendasTotal.toFixed(2)}</Typography>
-                        <Typography variant="body1" align="center" gutterBottom>Total de Vendas</Typography>
-                    </Grid>
-                    <Grid item xs={6}>
-                        <Typography variant="h5" align="center" gutterBottom>{ClientesTotal}</Typography>
-                        <Typography variant="body1" align="center" gutterBottom>Clientes</Typography>
-                    </Grid>
-                </Grid>
-            </Paper>
+                </Paper>
+            </Grid>
         </Grid>
-    </Grid>
     );
 }
 
