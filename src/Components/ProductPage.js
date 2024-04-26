@@ -41,7 +41,6 @@ function ProductsPage() {
     setOpenAddDialog(false);
   };
 
-  
 
   const handleCloseDeleteDialog = () => {
     setOpenDeleteDialog(false);

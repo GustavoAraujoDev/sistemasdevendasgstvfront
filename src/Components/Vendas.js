@@ -29,6 +29,10 @@ function SalesPage() {
     fetchSales();
   }, [startDate, endDate]);
 
+  const handleCloseDeleteDialog = () => {
+    setOpenDeleteDialog(false);
+  };
+
   const fetchSales = async () => {
     try {
       let url = "https://sistemasdevendasgstvback.onrender.com/Vendas";
@@ -87,7 +91,7 @@ function SalesPage() {
       headers: { "Content-Type": "application/json" },
     }).then(() => {
       toast.info('Venda excluída com sucesso!');
-      window.location.reload();
+      setSales(sales.filter(sale => sale.id !== saleIdToDelete))
     });
   };
   
@@ -212,7 +216,7 @@ function SalesPage() {
         </Table>
       </TableContainer>
       {/* Diálogo de exclusão */}
-      <Dialog open={openDeleteDialog} onClose={() => setOpenDeleteDialog(false)}>
+      <Dialog open={openDeleteDialog} onClose={handleCloseDeleteDialog}>
         <DialogTitle>Excluir Venda</DialogTitle>
         <DialogContent>
           <DialogContentText>
@@ -220,7 +224,7 @@ function SalesPage() {
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => setOpenDeleteDialog(false)} color="primary">
+          <Button onClick={handleCloseDeleteDialog} color="primary">
             Cancelar
           </Button>
           <Button onClick={handleDeleteConfirmed} color="secondary" autoFocus>
