@@ -39,7 +39,7 @@ function ClientsPage() {
   };
 
   useEffect(() => {
-    fetch("http://localhost:6060/Clientes")
+    fetch("https://sistemasdevendasgstvback.onrender.com/Clientes")
       .then((res) => res.json())
       .then((data) => {
         setClients(data);
@@ -59,7 +59,7 @@ function ClientsPage() {
     if (confirm("Tem certeza que deseja excluir estas informações?")) {
       // Se confirmar a pergunta anterior, envia as informações para o backend.
       console.log("Informação excluída");
-      fetch("http://localhost:6060/Clientes", {
+      fetch("https://sistemasdevendasgstvback.onrender.com/Clientes", {
         method: "DELETE",
         body: JSON.stringify({
           id: e.target.name,
@@ -76,7 +76,7 @@ function ClientsPage() {
   
 
   const handleAddClient = (e) => {
-    fetch("http://localhost:6060/Clientes", {
+    fetch("https://sistemasdevendasgstvback.onrender.com/Clientes", {
       method: "POST",
       body: JSON.stringify(dataToInsert),
       headers: { "Content-Type": "application/json" },

@@ -8,18 +8,20 @@ function Home() {
     const [VendasCount, setVendasCount] = useState(0);
     const [ProdutosCount, setProdutosCount] = useState(0);
     const [VendasTotal, setVendasTotal] = useState(0);
+    const [ProdutosTotal, setProdutosTotal] = useState(0);
     const [ClientesTotal, setClientesTotal] = useState(0);
-
+    
     useEffect(() => {
         fetchProdutosCount();
         fetchVendasCount();
         fetchVendasTotal();
         fetchClientesCount();
+        fetchProdutosTotal();
     }, []);
 
     const fetchClientesCount = async () => {
         try {
-            const response = await fetch("http://localhost:6060/Clientes");
+            const response = await fetch("https://sistemasdevendasgstvback.onrender.com/Clientes");
             if (!response.ok) {
                 throw new Error("Erro ao buscar número de Clientes: " + response.statusText);
             }
@@ -33,7 +35,7 @@ function Home() {
 
     const fetchVendasCount = async () => {
         try {
-            const response = await fetch("http://localhost:6060/Vendas");
+            const response = await fetch("https://sistemasdevendasgstvback.onrender.com/Vendas");
             if (!response.ok) {
                 throw new Error("Erro ao buscar número de Vendas: " + response.statusText);
             }
@@ -47,7 +49,7 @@ function Home() {
 
     const fetchVendasTotal = async () => {
         try {
-            const response = await fetch("http://localhost:6060/Vendas");
+            const response = await fetch("https://sistemasdevendasgstvback.onrender.com/Vendas");
             if (!response.ok) {
                 throw new Error("Erro ao buscar o total de Vendas: " + response.statusText);
             }
@@ -60,9 +62,24 @@ function Home() {
         }
     };
 
+    const fetchProdutosTotal = async () => {
+        try {
+            const response = await fetch("https://sistemasdevendasgstvback.onrender.com/Produtos");
+            if (!response.ok) {
+                throw new Error("Erro ao buscar o total de Vendas: " + response.statusText);
+            }
+            const data = await response.json();
+            const vendasComPreco = data.filter(venda => venda.Preco !== null);
+            const totalProdutos = vendasComPreco.reduce((total, venda) => total + (venda.Preco * venda.Quantidade), 0);
+            setProdutosTotal(totalProdutos);
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
     const fetchProdutosCount = async () => {
         try {
-            const response = await fetch("http://localhost:6060/Produtos");
+            const response = await fetch("https://sistemasdevendasgstvback.onrender.com/Produtos");
             if (!response.ok) {
                 throw new Error("Erro ao buscar número de Produtos: " + response.statusText);
             }
@@ -89,6 +106,10 @@ function Home() {
                     <Grid item xs={6}>
                         <Typography variant="h5" align="center" gutterBottom>{ProdutosCount}</Typography>
                         <Typography variant="body1" align="center" gutterBottom>Produtos</Typography>
+                    </Grid>
+                    <Grid item xs={6}>
+                        <Typography variant="h5" align="center" gutterBottom> R$ {typeof ProdutosTotal === 'number' ? ProdutosTotal.toFixed(2) : '0.00'}</Typography>
+                        <Typography variant="body1" align="center" gutterBottom>Total de Produtos</Typography>
                     </Grid>
                     <Grid item xs={6}>
                         <Typography variant="h5" align="center" gutterBottom>R$ {VendasTotal.toFixed(2)}</Typography>

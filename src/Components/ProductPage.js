@@ -40,11 +40,10 @@ function ProductsPage() {
   };
 
   useEffect(() => {
-    fetch("http://localhost:6060/Produtos")
+    fetch("https://sistemasdevendasgstvback.onrender.com/Produtos")
       .then((res) => res.json())
       .then((data) => {
         setProducts(data);
-        console.log(data);
       })
       .catch((err) => {
         console.error(err);
@@ -59,7 +58,7 @@ function ProductsPage() {
     if (confirm("Tem certeza que deseja excluir estas informações?")) {
       // Se confirmar a pergunta anterior, envia as informações para o backend.
       console.log("Informação excluída");
-      fetch("http://localhost:6060/Produtos", {
+      fetch("https://sistemasdevendasgstvback.onrender.com/Produtos", {
         method: "DELETE",
         body: JSON.stringify({
           ProductID: id
@@ -75,7 +74,7 @@ function ProductsPage() {
   };
 
   const handleAddProduct = (e) => {
-    fetch("http://localhost:6060/Produtos", {
+    fetch("https://sistemasdevendasgstvback.onrender.com/Produtos", {
       method: "POST",
       body: JSON.stringify(dataToInsert),
       headers: { "Content-Type": "application/json" },
@@ -123,6 +122,7 @@ function ProductsPage() {
                 <TableCell>Nome</TableCell>
                 <TableCell>Descrição</TableCell>
                 <TableCell>Preço</TableCell>
+                <TableCell>PreçoVenda</TableCell>
                 <TableCell>Quantidade</TableCell>
                 <TableCell>Ações</TableCell>
               </TableRow>
@@ -133,6 +133,7 @@ function ProductsPage() {
                   <TableCell>{product.Nome}</TableCell>
                   <TableCell>{product.Descricao}</TableCell>
                   <TableCell>R$ {product.Preco}</TableCell>
+                  <TableCell>R$ {product.PrecoVenda}</TableCell>
                   <TableCell>{product.Quantidade}</TableCell>
                   <TableCell>
                     <IconButton aria-label="editar" component={Link} to={`/products/edit/${product.ProductID}`} style={{ marginRight: '5px' }}>

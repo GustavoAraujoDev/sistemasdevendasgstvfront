@@ -14,7 +14,7 @@ import VisibilityIcon from '@mui/icons-material/Visibility';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { Button, Grid, Typography } from '@mui/material';
-
+import DoneIcon from '@mui/icons-material/Done';
 
 function SalesPage() {
   const [sales, setSales] = useState([]);
@@ -25,7 +25,7 @@ function SalesPage() {
   
   // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
-    fetch("http://localhost:6060/Vendas")
+    fetch("https://sistemasdevendasgstvback.onrender.com/Vendas")
       .then((res) => res.json())
       .then((data) => {
         setSales(data);
@@ -36,9 +36,10 @@ function SalesPage() {
       fetchSales();
   }, [startDate, endDate]);
 
+  console.log(sales);
   const fetchSales = async () => {
     try {
-      let url = "http://localhost:6060/Vendas";
+      let url = "https://sistemasdevendasgstvback.onrender.com/Vendas";
       if (startDate && endDate) {
         url += `?startDate=${startDate.toISOString()}&endDate=${endDate.toISOString()}`;
       }
@@ -54,6 +55,29 @@ function SalesPage() {
     }
   };
   
+  const atualizarSituacao = (id) => {
+    console.log(id);
+    sales.forEach((item) => {
+    /* eslint-disable no-restricted-globals */
+    if (confirm("Tem certeza que deseja excluir estas informações?")){  
+      fetch("https://sistemasdevendasgstvback.onrender.com/Vendas", {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        vendaId: item.id,
+        situacao: 'Concluída'
+      })
+    }).then(()=>{
+      window.location.reload();
+    })
+   /* eslint-disable no-restricted-globals */
+  } else {
+    toast.clearWaitingQueue('pedido de atualização cancelado')
+  }
+ });
+}
 
   const handleDelete = (id) => {
     console.log(id);
@@ -62,7 +86,7 @@ function SalesPage() {
     if (confirm("Tem certeza que deseja excluir estas informações?")) {
       // Se confirmar a pergunta anterior, envia as informações para o backend.
       console.log("Informação excluída");
-      fetch("http://localhost:6060/Vendas", {
+      fetch("https://sistemasdevendasgstvback.onrender.com/Vendas", {
         method: "DELETE",
         body: JSON.stringify({
           id: id,
@@ -80,7 +104,7 @@ function SalesPage() {
 
   const fetchSaleItems = async (id) => {
     try {
-      const response = await fetch(`http://localhost:6060/Vendas/${id}`);
+      const response = await fetch(`https://sistemasdevendasgstvback.onrender.com/Vendas/${id}`);
       const data = await response.json();
       return data;
     } catch (error) {
@@ -178,10 +202,20 @@ function SalesPage() {
                         <li key={item.id}>
                           <p>Produto: {item.nome}</p>
                           <p>Descrição: {item.descricao}</p>
-                          <p>Preço Unitário: R$ {item.preco}</p>
+                          <p>Preço Unitário: R$ {item.precovenda}</p>
                           <p>Quantidade: {item.quantidade}</p>
                         </li>
                       ))}
+                         <li>
+                          <p>Pagamento: {sale.pagamento}</p>
+                          <p>Situação: {sale.situacao}</p>
+                          <p>Cliente: {sale.cliente_id}</p>
+                          {sale.situacao === 'Pendente' && (
+                            <IconButton onClick={()=> atualizarSituacao(sale.id)}> 
+                              <DoneIcon />
+                            </IconButton>
+                          )}
+                        </li>
                     </ul>
                   </TableCell>
                 </TableRow>
