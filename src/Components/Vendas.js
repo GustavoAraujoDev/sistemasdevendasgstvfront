@@ -24,6 +24,8 @@ function SalesPage() {
   const [endDate, setEndDate] = useState(null);
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
   const [saleIdToDelete, setSaleIdToDelete] = useState(null);
+  const [openUptadeDialog, setOpenUptadeDialog] = useState(false);
+  const [saleIdToUptade, setSaleIdToUptade] = useState(null);
 
   useEffect(() => {
     fetchSales();
@@ -31,6 +33,10 @@ function SalesPage() {
 
   const handleCloseDeleteDialog = () => {
     setOpenDeleteDialog(false);
+  };
+  
+  const handleCloseUptadeDialog = () => {
+    setOpenUptadeDialog(false);
   };
 
   const fetchSales = async () => {
@@ -52,26 +58,24 @@ function SalesPage() {
   };
 
   const atualizarSituacao = (id) => {
-    console.log(id);
-    sales.forEach((item) => {
-      /* eslint-disable no-restricted-globals */
-      if (confirm("Tem certeza que deseja marcar essa venda como concluída?")) {
-        fetch("https://sistemasdevendasgstvback.onrender.com/Vendas", {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify({
-            vendaId: item.id,
-            situacao: 'Concluída'
-          })
-        }).then(() => {
-          window.location.reload();
-        });
-      } else {
-        toast.clearWaitingQueue('Pedido de atualização cancelado');
-      }
-      /* eslint-disable no-restricted-globals */
+    setSaleIdToUptade(id);
+    setOpenUptadeDialog(true);
+  };
+
+  const handleUptadeConfirmed = () => {
+    setOpenUptadeDialog(false);
+    fetch("https://sistemasdevendasgstvback.onrender.com/Vendas", {
+      method: "PUT",
+      body: JSON.stringify({
+        vendaId: saleIdToUptade,
+        situacao: 'Concluída'
+      }),
+      headers: { "Content-Type": "application/json" },
+    }).then(() => {
+      toast.success('Venda Atualizada com sucesso');
+      fetchSales()
+    }).catch((error) => {
+      console.error("Error:", error);
     });
   };
 
@@ -82,16 +86,18 @@ function SalesPage() {
 
   const handleDeleteConfirmed = () => {
     setOpenDeleteDialog(false);
-  
+    
     fetch("https://sistemasdevendasgstvback.onrender.com/Vendas", {
       method: "DELETE",
       body: JSON.stringify({
-        id: saleIdToDelete,
+        id: saleIdToDelete
       }),
       headers: { "Content-Type": "application/json" },
     }).then(() => {
-      toast.info('Venda excluída com sucesso!');
-      setSales(sales.filter(sale => sale.id !== saleIdToDelete))
+      toast.success('Venda excluída com sucesso');
+      fetchSales()
+    }).catch((error) => {
+      console.error("Error:", error);
     });
   };
   
@@ -215,7 +221,7 @@ function SalesPage() {
           </TableBody>
         </Table>
       </TableContainer>
-      {/* Diálogo de exclusão */}
+      
       <Dialog open={openDeleteDialog} onClose={handleCloseDeleteDialog}>
         <DialogTitle>Excluir Venda</DialogTitle>
         <DialogContent>
@@ -229,6 +235,23 @@ function SalesPage() {
           </Button>
           <Button onClick={handleDeleteConfirmed} color="secondary" autoFocus>
             Excluir
+          </Button>
+        </DialogActions>
+      </Dialog>
+
+      <Dialog open={openUptadeDialog} onClose={handleCloseUptadeDialog}>
+        <DialogTitle>Atualizar Venda</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            Tem certeza que deseja Atualizar esta venda?
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseDeleteDialog} color="primary">
+            Cancelar
+          </Button>
+          <Button onClick={handleUptadeConfirmed} color="secondary" autoFocus>
+            Atualizar
           </Button>
         </DialogActions>
       </Dialog>

@@ -114,11 +114,11 @@ function ProductsPage() {
   };
 
   return (
-    <Grid container justifyContent="center" style={{ marginTop: '0px' }}>
+    <Grid container justifyContent="center" style={{ marginTop: '0px', backgroundColor: '#c7c7c6', color: '#c0844a' }}>
       <Grid item xs={12} md={10} lg={8}>
         <div style={{ marginTop: '20px' }}>
           <Typography variant="h4" align="center" gutterBottom>Lista de Produtos</Typography>
-          <Button variant="contained" color="primary" startIcon={<AddIcon />} onClick={handleOpenAddDialog}>
+          <Button variant="contained" sx={{ backgroundColor: '#0a2e18', color: '#c0844a', marginRight: '8px' }} startIcon={<AddIcon style={{Color: '#c0844a'}}/>} onClick={handleOpenAddDialog}>
             Adicionar Produto
           </Button>
           <TableContainer component={Paper} style={{ marginTop: '20px' }}>

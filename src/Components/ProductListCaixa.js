@@ -181,7 +181,7 @@ const handleChange = (e) => {
   };
 
   return (
-    <Container style={{ marginLeft: '75px'}}>
+    <Container style={{ marginLeft: '5px'}}>
     <Grid container spacing={2} justifyContent='center'>
       <Grid item xs={12} sm={6}>
         <Paper elevation={3} sx={{ padding: 2 }}>
@@ -263,8 +263,8 @@ const handleChange = (e) => {
               <FormControlLabel value="Concluída" control={<Radio />} label="Concluída" />
             </RadioGroup>
             <div>
-              <Button variant="contained" color="success" onClick={finalizarCompra} startIcon={<ShoppingCartIcon />}>Finalizar Compra</Button>
-              <Button variant="contained" color="info" onClick={() => setCarrinho([])}>Limpar Carrinho</Button>
+            <Button variant="contained" sx={{ backgroundColor: '#fbc02d', color: '#000000', marginRight: '8px' }} onClick={finalizarCompra} startIcon={<ShoppingCartIcon />}>Finalizar Compra</Button>
+                <Button variant="contained" sx={{ backgroundColor: '#616161', color: '#ffffff' }} onClick={() => setCarrinho([])}>Limpar Carrinho</Button>
             </div>
           </Box>
         </Paper>

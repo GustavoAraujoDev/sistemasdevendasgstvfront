@@ -23,12 +23,14 @@ import { Grid } from '@mui/material';
 function ClientsPage() {
   const [clients, setClients] = useState([]);
   const [openAddDialog, setOpenAddDialog] = useState(false);
+  const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
   const [dataToInsert, setDataToInsert] = useState({
     nome: "",
     email: "",
     cpf: "",
     telefone: "",
   });
+  const [productIdToDelete, setProductIdToDelete] = useState(null);
   
   const handleOpenAddDialog = () => {
     setOpenAddDialog(true);
@@ -36,6 +38,10 @@ function ClientsPage() {
 
   const handleCloseAddDialog = () => {
     setOpenAddDialog(false);
+  };
+
+  const handleCloseDeleteDialog = () => {
+    setOpenDeleteDialog(false);
   };
 
   useEffect(() => {
@@ -52,29 +58,28 @@ function ClientsPage() {
 
   console.log(clients)
 
- const handleDelete = (e) => {
-    console.log(e.target.name);
-    // Pergunta se temos certeza de que desejamos excluir as informaçõe.
-    /* eslint-disable no-restricted-globals */
-    if (confirm("Tem certeza que deseja excluir estas informações?")) {
-      // Se confirmar a pergunta anterior, envia as informações para o backend.
-      console.log("Informação excluída");
-      fetch("https://sistemasdevendasgstvback.onrender.com/Clientes", {
-        method: "DELETE",
-        body: JSON.stringify({
-          id: e.target.name,
-        }),
-        headers: { "Content-Type": "application/json" },
-      });
-      // Atualiza a página para atualizar os dados do bd.
-      window.location.reload();
-      /* eslint-disable no-restricted-globals */
-    } else {
-      console.log("Pedido de exclusão cancelado.");
-    }
+  const handleDelete = (id) => {
+    setProductIdToDelete(id);
+    setOpenDeleteDialog(true);
+  };
+
+  const handleDeleteConfirmed = () => {
+    setOpenDeleteDialog(false);
+
+    fetch("https://sistemasdevendasgstvback.onrender.com/Clientes", {
+      method: "DELETE",
+      body: JSON.stringify({
+        id: productIdToDelete
+      }),
+      headers: { "Content-Type": "application/json" },
+    }).then(() => {
+      toast.success('Cliente excluído com sucesso');
+      setClients(clients.filter(product => product.id !== productIdToDelete));
+    }).catch((error) => {
+      console.error("Error:", error);
+    });
   };
   
-
   const handleAddClient = (e) => {
     fetch("https://sistemasdevendasgstvback.onrender.com/Clientes", {
       method: "POST",
@@ -113,7 +118,7 @@ function ClientsPage() {
     <Grid item xs={12} md={10} lg={8}>
       <div style={{ marginTop: '20px' }}>
         <h1 style={{ marginBottom: '20px', textAlign: 'center' }}>Lista de Clientes</h1>
-        <Button variant="contained" color="primary" startIcon={<AddIcon />} onClick={handleOpenAddDialog}>
+        <Button variant="contained" sx={{ backgroundColor: '#fbc02d', color: '#000000', marginRight: '8px' }} startIcon={<AddIcon />} onClick={handleOpenAddDialog}>
           Adicionar Cliente
         </Button>
         <TableContainer component={Paper} style={{ marginTop: '20px' }}>
@@ -138,7 +143,7 @@ function ClientsPage() {
                     <IconButton aria-label="editar" component={Link} to={`/clients/edit/${client.id}`} style={{ marginRight: '5px' }}>
                       <EditIcon />
                     </IconButton>
-                    <IconButton aria-label="excluir" onClick={() => handleDelete(client.id)}>
+                    <IconButton aria-label="excluir"  onClick={() => handleDelete(client.id)}>
                       <DeleteIcon />
                     </IconButton>
                   </TableCell>
@@ -192,6 +197,21 @@ function ClientsPage() {
             </Button>
           </DialogActions>
         </Dialog>
+
+        <Dialog open={openDeleteDialog} onClose={handleCloseDeleteDialog}>
+            <DialogTitle>Confirmar Exclusão</DialogTitle>
+            <DialogContent>
+              Tem certeza que deseja excluir este Cliente?
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={handleCloseDeleteDialog} color="secondary">
+                Cancelar
+              </Button>
+              <Button onClick={handleDeleteConfirmed} color="primary">
+                Excluir
+              </Button>
+            </DialogActions>
+          </Dialog>
       </div>
     </Grid>
   </Grid>

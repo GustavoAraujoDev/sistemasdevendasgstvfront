@@ -46,40 +46,40 @@ function Sidebar() {
         sx={{
           width: '220px',
           flexShrink: 0,
-          ...(isMobile && { '& .MuiDrawer-paper': { width: '220px' } }), // Ajusta a largura do Drawer para dispositivos móveis
-          ...(isMobile ? {} : { '& .MuiDrawer-paper': { width: '220px', marginTop: '64px' } }), // Ajusta a margem esquerda para dispositivos maiores
+          ...(isMobile && { '& .MuiDrawer-paper': { width: '220px', backgroundColor: '#c7c7c6', color: '#0a2e18'} }), // Ajusta a largura do Drawer para dispositivos móveis
+          ...(isMobile ? {} : { '& .MuiDrawer-paper': { width: '220px', marginTop: '87px', backgroundColor: '#c7c7c6', color: '#0a2e18'} }), // Ajusta a margem esquerda para dispositivos maiores
         }}
 
       >
         <Divider />
         <List>
-          <ListItem button component={Link} to="/" onClick={handleDrawerToggle}>
+          <ListItem button component={Link} to="/home" onClick={handleDrawerToggle}>
             <ListItemIcon>
-              <HomeIcon />
+              <HomeIcon style={{ color: '#c0844a' }} />
             </ListItemIcon>
             <ListItemText primary="Home" />
           </ListItem>
           <ListItem button component={Link} to="/ProductPage" onClick={handleDrawerToggle}>
             <ListItemIcon>
-              <StorefrontIcon />
+              <StorefrontIcon style={{ color: '#c0844a' }} />
             </ListItemIcon>
             <ListItemText primary="Produtos" />
           </ListItem>
           <ListItem button component={Link} to="/CaixaPage" onClick={handleDrawerToggle}>
             <ListItemIcon>
-              <ReceiptIcon />
+              <ReceiptIcon style={{ color: '#c0844a' }} />
             </ListItemIcon>
             <ListItemText primary="Caixa" />
           </ListItem>
           <ListItem button component={Link} to="/Vendas" onClick={handleDrawerToggle}>
             <ListItemIcon>
-              <ReceiptIcon />
+              <ReceiptIcon style={{ color: '#c0844a' }} />
             </ListItemIcon>
             <ListItemText primary="Vendas" />
           </ListItem>
           <ListItem button component={Link} to="/Clientes" onClick={handleDrawerToggle}>
             <ListItemIcon>
-              <PeopleIcon />
+              <PeopleIcon style={{ color: '#c0844a' }} />
             </ListItemIcon>
             <ListItemText primary="Clientes" />
           </ListItem>

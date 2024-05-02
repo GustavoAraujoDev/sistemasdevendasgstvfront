@@ -19,7 +19,7 @@ function App() {
         <div style={{ display: 'flex', flexGrow: 1, }}>
           <Sidebar/>
             <Routes>
-              <Route path="/" element={<Home />} />
+              <Route path="/home" element={<Home />} />
               <Route path="/ProductPage" element={<ProductsPage />} />
               <Route path="/CaixaPage" element={<CaixaPage />} />
               <Route path="/Vendas" element={<Vendas />} />
