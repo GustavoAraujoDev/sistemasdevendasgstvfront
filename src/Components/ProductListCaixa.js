@@ -58,6 +58,22 @@ const Caixa = () => {
       }));
 
       const totalPrice = calcularTotal();
+      if(carrinho.length === 0){
+        toast.error('Selecione um produto antes de finalizar a compra');
+        return;
+      }
+      if (!selectedClient) {
+        toast.error('Selecione um cliente antes de finalizar a compra');
+        return;
+    }
+    if (!dataToInsert.pagamento) {
+        toast.error('Selecione uma forma de pagamento antes de finalizar a compra');
+        return;
+    }
+    if (!dataToInsert.situacao) {
+        toast.error('Selecione uma situação antes de finalizar a compra');
+        return;
+    }
       
     console.log(items);
     console.log(totalPrice);
@@ -181,34 +197,36 @@ const handleChange = (e) => {
   };
 
   return (
-    <Container style={{ marginLeft: '5px'}}>
+    <Container style={{ marginLeft: '5px', backgroundColor: '#c7c7c6', minHeight:'100vh'}}>
     <Grid container spacing={2} justifyContent='center'>
-      <Grid item xs={12} sm={6}>
-        <Paper elevation={3} sx={{ padding: 2 }}>
-          <Typography variant="h5">Lista de Produtos</Typography>
+      <Grid item xs={12} sm={6} >
+        <Paper elevation={3} sx={{ padding: 2, backgroundColor: '#0a2e18', marginTop: '10px' }}>
+          <Typography variant="h5" color={'#c0844a'}>Lista de Produtos</Typography>
           <TextField
             label="Filtrar por nome"
             value={filtroNome}
             onChange={(e) => setFiltroNome(e.target.value)}
             fullWidth
             margin="normal"
+            style={{color:'#c0844a'}}
           />
           <List>
             {filtrarProdutos().map((produto) => (
               <ListItem key={produto.ProductID}>
-                <ListItemText primary={produto.Nome} secondary={`R$ ${produto.PrecoVenda}`} />
+                <ListItemText secondaryTypographyProps={{ style: { color: '#c0844a' } }} primaryTypographyProps={{ style: { color: '#c0844a' } }} primary={produto.Nome} secondary={`R$ ${produto.PrecoVenda}`} />
                 <Select
                   label="Quantidade"
                   value={Quantidade}
                   onChange={(event) => setQuantidade(event.target.value)}
                   disabled={produtosSelecionados[produto.ProductID]}
+                  style={{ color: '#c0844a' }}
                 >
                   {[...Array(parseInt(produto.Quantidade)).keys()].map((q) => (
-                    <MenuItem key={q + 1} value={q + 1}>{q + 1}</MenuItem>
+                    <MenuItem style={{ color: '#c0844a' }} key={q + 1} value={q + 1}>{q + 1}</MenuItem>
                   ))}
                 </Select>
                 <IconButton onClick={() => adicionarAoCarrinho(produto, Quantidade)} edge="end" aria-label="Adicionar">
-                  <AddIcon />
+                  <AddIcon style={{color: '#c0844a'}} />
                 </IconButton>
               </ListItem>
             ))}
@@ -216,16 +234,16 @@ const handleChange = (e) => {
         </Paper>
       </Grid>
       <Grid item xs={12} sm={6}>
-        <Paper elevation={3} sx={{ padding: 2 }}>
-          <Typography variant="h5">Carrinho</Typography>
+        <Paper elevation={3} sx={{ padding: 2, backgroundColor: '#0a2e18', marginTop: '10px' }}>
+          <Typography variant="h5" style={{ color: '#c0844a' }} >Carrinho</Typography>
           <List>
             {carrinho.map((item) => (
               <div key={item.produto.ProductID}>
                 <ListItem>
-                  <ListItemText primary={item.produto.Nome} secondary={`Quantidade: ${item.quantidade}`} />
-                  <ListItemText primary={`Total: R$ ${parseFloat(item.produto.PrecoVenda) * item.quantidade}`} />
+                  <ListItemText secondaryTypographyProps={{ style: { color: '#c0844a' } }} primaryTypographyProps={{ style: { color: '#c0844a' } }} primary={item.produto.Nome} secondary={`Quantidade: ${item.quantidade}`} />
+                  <ListItemText primaryTypographyProps={{ style: { color: '#c0844a' } }} primary={`Total: R$ ${parseFloat(item.produto.PrecoVenda) * item.quantidade}`} />
                   <IconButton onClick={() => removerDoCarrinho(item.produto.ProductID)} edge="end" aria-label="remover">
-                    <DeleteIcon />
+                    <DeleteIcon style={{ color: '#c0844a' }}/>
                   </IconButton>
                 </ListItem>
                 <Divider />
@@ -233,13 +251,13 @@ const handleChange = (e) => {
             ))}
           </List>
           <Box mt={2}>
-            <Typography variant="subtitle1">Valor Total do Carrinho: R$ {calcularTotal().toFixed(2)}</Typography>
-            <label>
+            <Typography style={{ color: '#c0844a' }} variant="subtitle1">Valor Total R$ {calcularTotal().toFixed(2)}</Typography>
+            <label style={{ color: '#c0844a' }}>
               Selecione o Cliente
-              <Select value={selectedClient} onChange={handleClientChange}>
-              <MenuItem value="">Selecione um cliente...</MenuItem>
+              <Select value={selectedClient} onChange={handleClientChange} style={{ color: '#c0844a' }}>
+              <MenuItem value="" style={{ color: '#c0844a' }}>Selecione um cliente...</MenuItem>
               {cliente.map(cliente => (
-              <MenuItem key={cliente.id} value={cliente.id}>{cliente.nome}</MenuItem>
+              <MenuItem style={{ color: '#c0844a' }} key={cliente.id} value={cliente.id}>{cliente.nome}</MenuItem>
                 ))}
               </Select>
             </label>
@@ -248,6 +266,7 @@ const handleChange = (e) => {
             value={dataToInsert.pagamento} 
             onChange={handleChange}
             row
+            style={{ color: '#c0844a' }}
             >
               <FormControlLabel value="PIX" control={<Radio />} label="PIX" />
               <FormControlLabel value="DINHEIRO" control={<Radio />} label="DINHEIRO" />
@@ -258,13 +277,14 @@ const handleChange = (e) => {
             value={dataToInsert.situacao} 
             onChange={handleChange}
             row
+            style={{ color: '#c0844a' }}
             >
               <FormControlLabel value="Pendente" control={<Radio />} label="Pendente" />
               <FormControlLabel value="Concluída" control={<Radio />} label="Concluída" />
             </RadioGroup>
             <div>
-            <Button variant="contained" sx={{ backgroundColor: '#fbc02d', color: '#000000', marginRight: '8px' }} onClick={finalizarCompra} startIcon={<ShoppingCartIcon />}>Finalizar Compra</Button>
-                <Button variant="contained" sx={{ backgroundColor: '#616161', color: '#ffffff' }} onClick={() => setCarrinho([])}>Limpar Carrinho</Button>
+            <Button variant="contained" sx={{ backgroundColor: '#c0844a', color: '$c7c7c6', marginRight: '8px' }} onClick={finalizarCompra} startIcon={<ShoppingCartIcon />}>Finalizar Compra</Button>
+            <Button variant="contained" sx={{ backgroundColor: '#616161', color: '#ffffff' }} onClick={() => setCarrinho([])}>Limpar Carrinho</Button>
             </div>
           </Box>
         </Paper>

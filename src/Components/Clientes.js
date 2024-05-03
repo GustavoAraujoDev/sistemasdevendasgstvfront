@@ -80,7 +80,56 @@ function ClientsPage() {
     });
   };
   
+  function isValidCPF(cpf) {
+    cpf = cpf.replace(/[^\d]+/g,'');
+    if (cpf === '' || cpf.length !== 11 || /^([0-9])\1+$/.test(cpf)) return false;
+  
+    let soma = 0;
+    let resto;
+  
+    for (let i = 1; i <= 9; i++) soma += parseInt(cpf.substring(i-1, i)) * (11 - i);
+    resto = (soma * 10) % 11;
+  
+    if (resto === 10 || resto === 11) resto = 0;
+    if (resto !== parseInt(cpf.substring(9, 10))) return false;
+  
+    soma = 0;
+    for (let i = 1; i <= 10; i++) soma += parseInt(cpf.substring(i-1, i)) * (12 - i);
+    resto = (soma * 10) % 11;
+  
+    if (resto === 10 || resto === 11) resto = 0;
+    if (resto !== parseInt(cpf.substring(10, 11))) return false;
+  
+    return true;
+  }
+  
   const handleAddClient = (e) => {
+  // Validação de campos obrigatórios
+  if (!dataToInsert.nome || !dataToInsert.email || !dataToInsert.cpf || !dataToInsert.telefone) {
+  toast.error('Por favor, preencha todos os campos.');
+  return;
+  }
+
+// Validação de formato de email
+const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+if (!emailRegex.test(dataToInsert.email)) {
+  toast.error('Por favor, insira um email válido.');
+  return;
+}
+
+// Validação de formato de CPF (assumindo que seja um CPF brasileiro)
+const cpfRegex = /^[0-9]{3}\.?[0-9]{3}\.?[0-9]{3}\-?[0-9]{2}$/;
+if (!cpfRegex.test(dataToInsert.cpf)) {
+  toast.error('Por favor, insira um CPF válido.');
+  return;
+}
+
+ // Validação de CPF válido
+ if (!isValidCPF(dataToInsert.cpf)) {
+  toast.error('Por favor, insira um CPF válido.');
+  return;
+}
+
     fetch("https://sistemasdevendasgstvback.onrender.com/Clientes", {
       method: "POST",
       body: JSON.stringify(dataToInsert),
@@ -114,11 +163,11 @@ function ClientsPage() {
   };
 
   return (
-    <Grid container justifyContent="center">
+    <Grid container justifyContent="center" style={{minHeight: '100vh', marginTop: '0px', backgroundColor: '#c7c7c6', color: '#c0844a'}}>
     <Grid item xs={12} md={10} lg={8}>
       <div style={{ marginTop: '20px' }}>
         <h1 style={{ marginBottom: '20px', textAlign: 'center' }}>Lista de Clientes</h1>
-        <Button variant="contained" sx={{ backgroundColor: '#fbc02d', color: '#000000', marginRight: '8px' }} startIcon={<AddIcon />} onClick={handleOpenAddDialog}>
+        <Button variant="contained" sx={{ backgroundColor: '#0a2e18', color: '#c0844a', marginRight: '8px' }} startIcon={<AddIcon style={{Color: '#c0844a'}} />} onClick={handleOpenAddDialog}>
           Adicionar Cliente
         </Button>
         <TableContainer component={Paper} style={{ marginTop: '20px' }}>

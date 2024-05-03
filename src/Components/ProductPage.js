@@ -80,6 +80,24 @@ function ProductsPage() {
   };
 
   const handleAddProduct = (e) => {
+    // Validação de campos obrigatórios
+  if (!dataToInsert.Nome || !dataToInsert.Descricao || !dataToInsert.Preco || !dataToInsert.Quantidade || !dataToInsert.PrecoVenda) {
+    toast.error('Por favor, preencha todos os campos.');
+    return;
+  }
+
+  // Validação de formato
+  if (isNaN(dataToInsert.Preco) || isNaN(dataToInsert.Quantidade) || isNaN(dataToInsert.PrecoVenda)) {
+    toast.error('Por favor, insira valores numéricos válidos.');
+    return;
+  }
+
+  // Validação de valores
+  if (parseFloat(dataToInsert.Preco) <= 0 || parseInt(dataToInsert.Quantidade) <= 0 || parseFloat(dataToInsert.PrecoVenda) <= 0) {
+    toast.error('Por favor, insira valores positivos.');
+    return;
+  }
+  
     fetch("https://sistemasdevendasgstvback.onrender.com/Produtos", {
       method: "POST",
       body: JSON.stringify(dataToInsert),
@@ -114,7 +132,7 @@ function ProductsPage() {
   };
 
   return (
-    <Grid container justifyContent="center" style={{ marginTop: '0px', backgroundColor: '#c7c7c6', color: '#c0844a' }}>
+    <Grid container justifyContent="center" style={{ minHeight: '100vh', marginTop: '0px', backgroundColor: '#c7c7c6', color: '#c0844a' }}>
       <Grid item xs={12} md={10} lg={8}>
         <div style={{ marginTop: '20px' }}>
           <Typography variant="h4" align="center" gutterBottom>Lista de Produtos</Typography>
@@ -124,7 +142,7 @@ function ProductsPage() {
           <TableContainer component={Paper} style={{ marginTop: '20px' }}>
             <Table>
               <TableHead>
-                <TableRow>
+                <TableRow >
                   <TableCell>Nome</TableCell>
                   <TableCell>Descrição</TableCell>
                   <TableCell>Preço</TableCell>
@@ -145,7 +163,7 @@ function ProductsPage() {
                       <IconButton aria-label="editar" component={Link} to={`/products/edit/${product.ProductID}`} style={{ marginRight: '5px' }}>
                         <EditIcon />
                       </IconButton>
-                      <IconButton aria-label="excluir" onClick={() => handleDelete(product.ProductID)}>
+                      <IconButton aria-label="excluir"  onClick={() => handleDelete(product.ProductID)}>
                         <DeleteIcon />
                       </IconButton>
                     </TableCell>

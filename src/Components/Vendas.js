@@ -73,7 +73,7 @@ function SalesPage() {
       headers: { "Content-Type": "application/json" },
     }).then(() => {
       toast.success('Venda Atualizada com sucesso');
-      fetchSales()
+      fetchSales();
     }).catch((error) => {
       console.error("Error:", error);
     });
@@ -95,7 +95,7 @@ function SalesPage() {
       headers: { "Content-Type": "application/json" },
     }).then(() => {
       toast.success('Venda excluída com sucesso');
-      fetchSales()
+      fetchSales();
     }).catch((error) => {
       console.error("Error:", error);
     });
@@ -137,7 +137,8 @@ function SalesPage() {
   };
 
   return (
-    <div style={{ margin: '20px auto', maxWidth: 1200 }}>
+    <Grid container justifyContent="center" style={{ minHeight: '100vh', marginTop: '0px', backgroundColor: '#c7c7c6', color: '#c0844a' }}>
+      <Grid item xs={12} md={10} lg={8}>
       <h1 style={{ textAlign: 'center' }}>Lista de Vendas</h1>
       <Grid container spacing={2} justifyContent="center" sx={{ flexDirection: 'column', textAlign: 'center' }}>
         <Grid item xs={12} sm={6} md={3}>
@@ -157,7 +158,7 @@ function SalesPage() {
           />
         </Grid>
         <Grid item xs={12} sm={6} md={3}>
-          <Button variant="contained" onClick={fetchSales}>Filtrar</Button>
+          <Button variant="contained" style={{ color: '#c0844a', backgroundColor: '#0a2e18'}} onClick={fetchSales}>Filtrar</Button>
         </Grid>
       </Grid>
       <TableContainer component={Paper} style={{ marginTop: '20px' }}>
@@ -255,7 +256,8 @@ function SalesPage() {
           </Button>
         </DialogActions>
       </Dialog>
-    </div>
+    </Grid>
+    </Grid>
   );
 }
 
