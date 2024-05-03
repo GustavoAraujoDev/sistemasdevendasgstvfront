@@ -69,7 +69,7 @@ function Home() {
                              <item.icon style={{ color: '#c0844a' }} fontSize="large" />
                               </Grid>
                             <Grid item>
-                            <Typography variant="body1" color={'#c0844a'} gutterBottom>{item.label1}</Typography>
+                            <Typography variant="body1" color={'#c0844a'} fontSize={'large'} gutterBottom>{item.label1}</Typography>
                                </Grid>
                                <Grid item>
                             <Typography variant="body1" color={'#c0844a'} gutterBottom>{item.label2}</Typography>

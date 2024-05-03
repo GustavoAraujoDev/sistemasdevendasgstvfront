@@ -17,8 +17,9 @@ import useMediaQuery from '@mui/material/useMediaQuery';
 import useTheme from '@mui/material/styles/useTheme';
 import Typography from '@mui/material/Typography';
 import Avatar from '@mui/material/Avatar';
+import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 
-function Sidebar() {
+function Sidebar({onLogout}) {
   const imageUrl = 'https://th.bing.com/th/id/R.5bbe9716682bf2d26bebe24f0e949744?rik=OOjRbE5jics8RA&riu=http%3a%2f%2fjuniordesignufpr.com.br%2fwp-content%2fuploads%2f2016%2f01%2fcarmelis.png&ehk=7%2bJu6ynJ4gfjCalKyNjw3t50YMElLaNwz1AFjFrm1UI%3d&risl=&pid=ImgRaw&r=0'; // Substitua com sua URL de imagem
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm')); // Verifica se é uma tela móvel (menor que 'sm')
@@ -31,7 +32,7 @@ function Sidebar() {
   return (
     <>
       {isMobile && (
-        <Toolbar>
+        <Toolbar style={{backgroundColor: '#c7c7c6'}}>
           <IconButton
             color="inherit"
             aria-label="open drawer"
@@ -79,12 +80,6 @@ function Sidebar() {
             </ListItemIcon>
             <ListItemText primary="Caixa" />
           </ListItem>
-          <ListItem button component={Link} to="/Login" onClick={handleDrawerToggle}>
-            <ListItemIcon>
-              <ReceiptIcon style={{ color: '#c0844a' }} />
-            </ListItemIcon>
-            <ListItemText primary="Caixa" />
-          </ListItem>
           <ListItem button component={Link} to="/Vendas" onClick={handleDrawerToggle}>
             <ListItemIcon>
               <ReceiptIcon style={{ color: '#c0844a' }} />
@@ -96,6 +91,12 @@ function Sidebar() {
               <PeopleIcon style={{ color: '#c0844a' }} />
             </ListItemIcon>
             <ListItemText primary="Clientes" />
+          </ListItem>
+          <ListItem button component={Link} to='/' onClick={onLogout}>
+            <ListItemIcon>
+              <ExitToAppIcon style={{ color: '#c0844a' }} />
+            </ListItemIcon>
+            <ListItemText primary="Log Out" />
           </ListItem>
         </List>
         <Divider />

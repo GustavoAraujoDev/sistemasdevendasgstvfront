@@ -18,6 +18,10 @@ function App() {
     setIsLoggedIn(true);
   };
 
+  const handleLogoutSuccess = () => {
+    setIsLoggedIn(false);
+  };
+
   return (
     <Router>
       <ToastContainer />
@@ -27,8 +31,9 @@ function App() {
           element={
             isLoggedIn ? (
                 <div style={{ display: 'flex', flexGrow: 1 }}>
-                  <Sidebar />
+                  <Sidebar onLogout={handleLogoutSuccess}/>
                   <Routes>
+                    
                     <Route path="/home" element={<Home />} />
                     <Route path="/ProductPage" element={<ProductsPage />} />
                     <Route path="/CaixaPage" element={<CaixaPage />} />
