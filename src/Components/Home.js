@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Grid, Typography, CircularProgress, IconButton } from '@mui/material';
 import { motion } from 'framer-motion';
 
-import { BarChart, People, ShoppingCart } from '@mui/icons-material';
+import { BarChart, Label, People, ShoppingCart } from '@mui/icons-material';
 
 function Home() {
     const [loading, setLoading] = useState(true);
@@ -60,23 +60,26 @@ function Home() {
                 <CircularProgress />
             ) : (
                 <Grid container spacing={3} alignItems="center" justifyContent="center" style={{ padding: '20px' }}> 
-                    {[{ icon: People, label: clientesTotal }, { icon: ShoppingCart, label: produtosCount }, { icon: BarChart, label: vendasCount }, { icon: ShoppingCart, label: `R$ ${produtosTotal.toFixed(2)}` }, { icon: BarChart, label: `R$ ${vendasTotal.toFixed(2)}` }].map((item, index) => (
-                        <Grid item xs={12} sm={6} md={4} key={index} style={{ display: 'flex', justifyContent: 'center' }}>
-                            <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
-                                <IconButton style={{ backgroundColor: '#0a2e18', borderRadius: '50%', width: '100px', height: '100px', marginBottom: '30px',}}>
-                                    <Grid container direction="column" alignItems="center">
-                                        <Grid item>
-                                            <item.icon style={{ color: '#c0844a' }} fontSize="large" />
-                                        </Grid>
-                                        <Grid item>
-                                            <Typography variant="body1" color={'#c0844a'} gutterBottom>{item.label}</Typography>
-                                        </Grid>
-                                    </Grid>
-                                </IconButton>
-                            </motion.div>
-                        </Grid>
-                    ))}
-                </Grid>
+                 {[{ icon: People, label1: clientesTotal, label2: 'Clientes' }, { icon: ShoppingCart, label1: produtosCount, label2: 'Produtos' }, { icon: BarChart, label1: vendasCount, label2: 'Vendas' }, { icon: ShoppingCart, label1: `R$ ${produtosTotal.toFixed(2)}`, label2: 'Valor Produtos'}, { icon: BarChart, label1: `R$ ${vendasTotal.toFixed(2)}`, label2: 'Total Vendas' }].map((item, index) => (
+                    <Grid item xs={12} sm={6} md={4} key={index}  >
+                     <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
+                        <IconButton style={{boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.1)', backgroundColor: '#0a2e18', width: '200px', height: '120px', marginBottom: '30px', borderRadius: '12px' }}>
+                           <Grid container direction="column" alignItems="flex-start">
+                            <Grid item>
+                             <item.icon style={{ color: '#c0844a' }} fontSize="large" />
+                              </Grid>
+                            <Grid item>
+                            <Typography variant="body1" color={'#c0844a'} gutterBottom>{item.label1}</Typography>
+                               </Grid>
+                               <Grid item>
+                            <Typography variant="body1" color={'#c0844a'} gutterBottom>{item.label2}</Typography>
+                               </Grid>
+                    </Grid>
+                </IconButton>
+            </motion.div>
+        </Grid>
+    ))}
+</Grid>
             )}
         </Grid>
     </Grid>    
