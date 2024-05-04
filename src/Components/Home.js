@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Grid, Typography, CircularProgress, IconButton } from '@mui/material';
 import { motion } from 'framer-motion';
-
-import { BarChart, Label, People, ShoppingCart } from '@mui/icons-material';
+import { BarChart, Label, People, ShoppingCart, Money } from '@mui/icons-material';
 
 function Home() {
     const [loading, setLoading] = useState(true);
@@ -11,11 +10,10 @@ function Home() {
     const [vendasTotal, setVendasTotal] = useState(0);
     const [produtosTotal, setProdutosTotal] = useState(0);
     const [clientesTotal, setClientesTotal] = useState(0);
-
+    const [LucroTotal, setLucroTotal] = useState(0);
     useEffect(() => {
         fetchData();
     }, []);
-
     const fetchData = async () => {
         try {
             const [clientesResponse, vendasResponse, produtosResponse] = await Promise.all([
@@ -27,13 +25,11 @@ function Home() {
             if (!clientesResponse.ok || !vendasResponse.ok || !produtosResponse.ok) {
                 throw new Error("Erro ao buscar dados.");
             }
-
             const [clientesData, vendasData, produtosData] = await Promise.all([
                 clientesResponse.json(),
                 vendasResponse.json(),
                 produtosResponse.json()
             ]);
-
             setClientesTotal(clientesData.length);
             setVendasCount(vendasData.length);
             setProdutosCount(produtosData.length);
@@ -43,7 +39,22 @@ function Home() {
 
             const produtosTotal = produtosData.reduce((total, produto) => total + (produto.Preco * produto.Quantidade), 0);
             setProdutosTotal(produtosTotal);
-
+            
+        const idsvendas = vendasData.map(venda => venda.id) 
+        const promessasItensVendas = idsvendas.map(id => fetch(`https://sistemasdevendasgstvback.onrender.com/Vendas/${id}`));
+        const respostasItensVendas = await Promise.all(promessasItensVendas);
+        const itensVendas = await Promise.all(respostasItensVendas.map(resposta => resposta.json()));
+        const LucroTotal = itensVendas.reduce((total, itensVenda) => {
+            // Itera sobre os arrays internos e calcula o lucro de cada item de venda
+            const lucroItensVenda = itensVenda.reduce((totalItem, produto) => {
+                // Calcula o lucro para cada item de venda (preço de venda - preço de compra)
+                return totalItem + (produto.quantidade * (produto.precovenda - produto.preco));
+            }, 0);
+            // Soma o lucro dos itens de venda ao total
+            return total + lucroItensVenda;
+        }, 0);
+        setLucroTotal(LucroTotal);
+        
             setLoading(false);
         } catch (error) {
             console.error(error);
@@ -52,7 +63,7 @@ function Home() {
     };
 
     return (
-        <Grid container justifyContent="center" alignItems="center" style={{ minHeight: '100vh', position: 'relative', backgroundColor: '#c7c7c6'}}>
+        <Grid container justifyContent={'center'} style={{ minHeight: '100vh', position: 'relative', backgroundColor: '#c7c7c6'}}>
         <Grid item xs={12} md={8}>
             <Typography variant="h4" color="#c0844a" gutterBottom>Gerencie seus Produtos com Maestria</Typography>
             <Typography variant="body1" style={{ color: '#969696', marginBottom: '30px' }}>Explore todas as possibilidades do nosso aplicativo de gestão de produtos. Aqui, você tem tudo o que precisa para manter seu negócio organizado e próspero.</Typography>
@@ -60,7 +71,7 @@ function Home() {
                 <CircularProgress />
             ) : (
                 <Grid container spacing={3} alignItems="center" justifyContent="center" style={{ padding: '20px' }}> 
-                 {[{ icon: People, label1: clientesTotal, label2: 'Clientes' }, { icon: ShoppingCart, label1: produtosCount, label2: 'Produtos' }, { icon: BarChart, label1: vendasCount, label2: 'Vendas' }, { icon: ShoppingCart, label1: `R$ ${produtosTotal.toFixed(2)}`, label2: 'Valor Produtos'}, { icon: BarChart, label1: `R$ ${vendasTotal.toFixed(2)}`, label2: 'Total Vendas' }].map((item, index) => (
+                 {[{ icon: Money, label1: `R$ ${LucroTotal.toFixed(2)}`, label2: 'Lucro' }, { icon: People, label1: clientesTotal, label2: 'Clientes' }, { icon: ShoppingCart, label1: produtosCount, label2: 'Produtos' }, { icon: BarChart, label1: vendasCount, label2: 'Vendas' }, { icon: ShoppingCart, label1: `R$ ${produtosTotal.toFixed(2)}`, label2: 'Valor Produtos'}, { icon: BarChart, label1: `R$ ${vendasTotal.toFixed(2)}`, label2: 'Total Vendas' }].map((item, index) => (
                     <Grid item xs={12} sm={6} md={4} key={index}  >
                      <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
                         <IconButton style={{boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.1)', backgroundColor: '#0a2e18', width: '200px', height: '120px', marginBottom: '30px', borderRadius: '12px' }}>
