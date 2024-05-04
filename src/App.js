@@ -34,7 +34,7 @@ function App() {
                   <Sidebar onLogout={handleLogoutSuccess}/>
                   <Routes>
                     
-                    <Route path="/home" element={<Home />} />
+                    <Route path="/" element={<Home />} />
                     <Route path="/ProductPage" element={<ProductsPage />} />
                     <Route path="/CaixaPage" element={<CaixaPage />} />
                     <Route path="/Vendas" element={<Vendas />} />

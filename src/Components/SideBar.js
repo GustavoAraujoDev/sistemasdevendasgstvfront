@@ -62,7 +62,7 @@ function Sidebar({onLogout}) {
           Cermelis
         </Typography>
         <Divider />
-          <ListItem button component={Link} to="/home" onClick={handleDrawerToggle}>
+          <ListItem button component={Link} to="/" onClick={handleDrawerToggle}>
             <ListItemIcon>
               <HomeIcon style={{ color: '#c0844a' }} />
             </ListItemIcon>
