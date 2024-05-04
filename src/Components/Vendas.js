@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/Delete';
+import { format } from 'date-fns';
 import EditIcon from '@mui/icons-material/Edit';
 import { toast } from 'react-toastify';
 import TableContainer from '@mui/material/TableContainer';
@@ -30,7 +31,8 @@ function SalesPage() {
   useEffect(() => {
     fetchSales();
   }, [startDate, endDate]);
-
+  console.log(endDate)
+  console.log(startDate)
   const handleCloseDeleteDialog = () => {
     setOpenDeleteDialog(false);
   };
@@ -45,6 +47,7 @@ function SalesPage() {
       if (startDate && endDate) {
         url += `?startDate=${startDate.toISOString()}&endDate=${endDate.toISOString()}`;
       }
+      console.log("URL da solicitação de busca de vendas:", url); // Log da URL da solicitação
       const response = await fetch(url);
       if (!response.ok) {
         throw new Error('Erro ao buscar vendas');
@@ -129,11 +132,13 @@ function SalesPage() {
   };
 
   const handleStartDateChange = (date) => {
-    setStartDate(date);
+    const formattedDate = format(date, 'dd/MM/yyyy');
+    setStartDate(formattedDate);
   };
 
   const handleEndDateChange = (date) => {
-    setEndDate(date);
+    const formattedDate = format(date, 'dd/MM/yyyy');
+    setEndDate(formattedDate);
   };
 
   return (
@@ -176,7 +181,7 @@ function SalesPage() {
               <React.Fragment key={sale.id}>
                 <TableRow>
                   <TableCell>{sale.id}</TableCell>
-                  <TableCell>{sale.data_venda}</TableCell>
+                  <TableCell>{new Date(sale.data_venda).toLocaleDateString()}</TableCell>
                   <TableCell>R$ {sale.total_price}</TableCell>
                   <TableCell>
                     <IconButton aria-label="ver detalhes" onClick={() => toggleSaleDetails(sale)}>
