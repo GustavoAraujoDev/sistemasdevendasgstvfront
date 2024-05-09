@@ -28,7 +28,7 @@ function SalesPage() {
   const [openUpdateDialog, setOpenUpdateDialog] = useState(false);
   const [saleIdToUpdate, setSaleIdToUpdate] = useState(null);
   const [filteredSales, setFilteredSales] = useState([]);
-
+  const [filterloading, setFilterloading] = useState(false);
   useEffect(() => {
     fetchSales();
   }, []);
@@ -139,12 +139,14 @@ function SalesPage() {
         return saleDate >= startDate && saleDate <= endDate;
       });
       setFilteredSales(filtered);
+      setFilterloading(true);
     } else {
       setFilteredSales(sales); // Se nenhuma data selecionada, exibir todas as vendas
     }
   };
 
   const clearFilter = () => {
+    setFilterloading(false);
     setStartDate(null);
     setEndDate(null);
     setFilteredSales(sales); // Atualiza para mostrar todas as vendas novamente
@@ -173,12 +175,12 @@ function SalesPage() {
           </Grid>
           <Grid item xs={12} sm={6} md={3}>
             <Button variant="contained" style={{ color: '#c0844a', backgroundColor: '#0a2e18'}} onClick={handleFilter}>Filtrar</Button>
-            {startDate && endDate &&(
+            {filterloading && (
             <IconButton aria-label="excluir" onClick={clearFilter}>
               <Typography variant="body1">Desfazer Filtragem</Typography>
               <DeleteIcon />
             </IconButton>
-            )}
+           )}
           </Grid>
         </Grid>
         <TableContainer component={Paper} style={{ marginTop: '20px' }}>
