@@ -25,52 +25,46 @@ function SalesPage() {
   const [endDate, setEndDate] = useState(null);
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
   const [saleIdToDelete, setSaleIdToDelete] = useState(null);
-  const [openUptadeDialog, setOpenUptadeDialog] = useState(false);
-  const [saleIdToUptade, setSaleIdToUptade] = useState(null);
+  const [openUpdateDialog, setOpenUpdateDialog] = useState(false);
+  const [saleIdToUpdate, setSaleIdToUpdate] = useState(null);
+  const [filteredSales, setFilteredSales] = useState([]);
 
   useEffect(() => {
     fetchSales();
-  }, [startDate, endDate]);
-  console.log(endDate)
-  console.log(startDate)
+  }, []);
+
   const handleCloseDeleteDialog = () => {
     setOpenDeleteDialog(false);
   };
   
-  const handleCloseUptadeDialog = () => {
-    setOpenUptadeDialog(false);
+  const handleCloseUpdateDialog = () => {
+    setOpenUpdateDialog(false);
   };
 
-  const fetchSales = async () => {
-    try {
-      let url = "https://sistemasdevendasgstvback.onrender.com/Vendas";
-      if (startDate && endDate) {
-        url += `?startDate=${startDate.toISOString()}&endDate=${endDate.toISOString()}`;
-      }
-      console.log("URL da solicitação de busca de vendas:", url); // Log da URL da solicitação
-      const response = await fetch(url);
-      if (!response.ok) {
-        throw new Error('Erro ao buscar vendas');
-      }
-      const data = await response.json();
-      setSales(data);
-    } catch (error) {
-      console.error("Erro ao buscar vendas:", error);
-      toast.error("Erro ao buscar vendas.");
-    }
+  const fetchSales = () => {
+      fetch("https://sistemasdevendasgstvback.onrender.com/Vendas")
+      .then((res) => res.json())
+      .then((data) => {
+        setSales(data);
+        setFilteredSales(data); // Ao buscar as vendas, inicialmente exibir todas
+      })
+      .catch((err) => {
+        console.error(err);
+        toast.error("Erro ao buscar vendas.");
+      });
   };
 
-  const atualizarSituacao = (id) => {
-    setSaleIdToUptade(id);
-    setOpenUptadeDialog(true);
+  const updateSaleStatus = (id) => {
+    setSaleIdToUpdate(id);
+    setOpenUpdateDialog(true);
   };
 
-  const handleUptadeConfirmed = () => {
-    setOpenUptadeDialog(false);
+  const handleUpdateConfirmed = () => {
+    setOpenUpdateDialog(false);
     fetch("https://sistemasdevendasgstvback.onrender.com/Vendas", {
       method: "PUT",
       body: JSON.stringify({
-        vendaId: saleIdToUptade,
+        vendaId: saleIdToUpdate,
         situacao: 'Concluída'
       }),
       headers: { "Content-Type": "application/json" },
@@ -89,7 +83,6 @@ function SalesPage() {
 
   const handleDeleteConfirmed = () => {
     setOpenDeleteDialog(false);
-    
     fetch("https://sistemasdevendasgstvback.onrender.com/Vendas", {
       method: "DELETE",
       body: JSON.stringify({
@@ -132,136 +125,158 @@ function SalesPage() {
   };
 
   const handleStartDateChange = (date) => {
-    const formattedDate = format(date, 'dd/MM/yyyy');
-    setStartDate(formattedDate);
+    setStartDate(date);
   };
 
   const handleEndDateChange = (date) => {
-    const formattedDate = format(date, 'dd/MM/yyyy');
-    setEndDate(formattedDate);
+    setEndDate(date);
+  };
+
+  const handleFilter = () => {
+    if (startDate && endDate) {
+      const filtered = sales.filter(sale => {
+        const saleDate = new Date(sale.data_venda);
+        return saleDate >= startDate && saleDate <= endDate;
+      });
+      setFilteredSales(filtered);
+    } else {
+      setFilteredSales(sales); // Se nenhuma data selecionada, exibir todas as vendas
+    }
+  };
+
+  const clearFilter = () => {
+    setStartDate(null);
+    setEndDate(null);
+    setFilteredSales(sales); // Atualiza para mostrar todas as vendas novamente
   };
 
   return (
     <Grid container justifyContent="center" style={{ minHeight: '100vh', marginTop: '0px', backgroundColor: '#c7c7c6', color: '#c0844a' }}>
       <Grid item xs={12} md={10} lg={8}>
-      <h1 style={{ textAlign: 'center' }}>Lista de Vendas</h1>
-      <Grid container spacing={2} justifyContent="center" sx={{ flexDirection: 'column', textAlign: 'center' }}>
-        <Grid item xs={12} sm={6} md={3}>
-          <Typography variant="body1">De:</Typography>
-          <DatePicker
-            selected={startDate}
-            onChange={handleStartDateChange}
-            dateFormat="dd/MM/yyyy"
-          />
+        <h1 style={{ textAlign: 'center' }}>Lista de Vendas</h1>
+        <Grid container spacing={2} justifyContent="center" sx={{ flexDirection: 'column', textAlign: 'center' }}>
+          <Grid item xs={12} sm={6} md={3}>
+            <Typography variant="body1">De:</Typography>
+            <DatePicker
+              selected={startDate}
+              onChange={handleStartDateChange}
+              dateFormat="dd/MM/yyyy"
+            />
+          </Grid>
+          <Grid item xs={12} sm={6} md={3}>
+            <Typography variant="body1">Até:</Typography>
+            <DatePicker
+              selected={endDate}
+              onChange={handleEndDateChange}
+              dateFormat="dd/MM/yyyy"
+            />
+          </Grid>
+          <Grid item xs={12} sm={6} md={3}>
+            <Button variant="contained" style={{ color: '#c0844a', backgroundColor: '#0a2e18'}} onClick={handleFilter}>Filtrar</Button>
+            {startDate && endDate &&(
+            <IconButton aria-label="excluir" onClick={clearFilter}>
+              <Typography variant="body1">Desfazer Filtragem</Typography>
+              <DeleteIcon />
+            </IconButton>
+            )}
+          </Grid>
         </Grid>
-        <Grid item xs={12} sm={6} md={3}>
-          <Typography variant="body1">Até:</Typography>
-          <DatePicker
-            selected={endDate}
-            onChange={handleEndDateChange}
-            dateFormat="dd/MM/yyyy"
-          />
-        </Grid>
-        <Grid item xs={12} sm={6} md={3}>
-          <Button variant="contained" style={{ color: '#c0844a', backgroundColor: '#0a2e18'}} onClick={fetchSales}>Filtrar</Button>
-        </Grid>
-      </Grid>
-      <TableContainer component={Paper} style={{ marginTop: '20px' }}>
-        <Table aria-label="vendas">
-          <TableHead>
-            <TableRow>
-              <TableCell>Venda</TableCell>
-              <TableCell>Data</TableCell>
-              <TableCell>Total</TableCell>
-              <TableCell>Ações</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {sales.map((sale) => (
-              <React.Fragment key={sale.id}>
-                <TableRow>
-                  <TableCell>{sale.id}</TableCell>
-                  <TableCell>{new Date(sale.data_venda).toLocaleDateString()}</TableCell>
-                  <TableCell>R$ {sale.total_price}</TableCell>
-                  <TableCell>
-                    <IconButton aria-label="ver detalhes" onClick={() => toggleSaleDetails(sale)}>
-                      <VisibilityIcon />
-                    </IconButton>
-                    <IconButton aria-label="editar">
-                      <EditIcon />
-                    </IconButton>
-                    <IconButton aria-label="excluir" onClick={() => handleDelete(sale.id)}>
-                      <DeleteIcon />
-                    </IconButton>
-                  </TableCell>
-                </TableRow>
-                {selectedSale === sale && (
+        <TableContainer component={Paper} style={{ marginTop: '20px' }}>
+          <Table aria-label="vendas">
+            <TableHead>
+              <TableRow>
+                <TableCell>Venda</TableCell>
+                <TableCell>Data</TableCell>
+                <TableCell>Total</TableCell>
+                <TableCell>Ações</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {filteredSales.map((sale) => (
+                <React.Fragment key={sale.id}>
                   <TableRow>
-                    <TableCell colSpan={4}>
-                      <h3>Detalhes da Venda:</h3>
-                      <ul>
-                        {ItensSales.map((item) => (
-                          <li key={item.id}>
-                            <p>Produto: {item.nome}</p>
-                            <p>Descrição: {item.descricao}</p>
-                            <p>Preço Unitário: R$ {item.precovenda}</p>
-                            <p>Quantidade: {item.quantidade}</p>
-                          </li>
-                        ))}
-                        <li>
-                          <p>Pagamento: {sale.pagamento}</p>
-                          <p>Situação: {sale.situacao}</p>
-                          <p>Cliente: {sale.cliente_id}</p>
-                          {sale.situacao === 'Pendente' && (
-                            <IconButton onClick={() => atualizarSituacao(sale.id)}>
-                              <DoneIcon />
-                            </IconButton>
-                          )}
-                        </li>
-                      </ul>
+                    <TableCell>{sale.id}</TableCell>
+                    <TableCell>{new Date(sale.data_venda).toLocaleDateString()}</TableCell>
+                    <TableCell>R$ {sale.total_price}</TableCell>
+                    <TableCell>
+                      <IconButton aria-label="ver detalhes" onClick={() => toggleSaleDetails(sale)}>
+                        <VisibilityIcon />
+                      </IconButton>
+                      <IconButton aria-label="editar">
+                        <EditIcon />
+                      </IconButton>
+                      <IconButton aria-label="excluir" onClick={() => handleDelete(sale.id)}>
+                        <DeleteIcon />
+                      </IconButton>
                     </TableCell>
                   </TableRow>
-                )}
-              </React.Fragment>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
-      
-      <Dialog open={openDeleteDialog} onClose={handleCloseDeleteDialog}>
-        <DialogTitle>Excluir Venda</DialogTitle>
-        <DialogContent>
-          <DialogContentText>
-            Tem certeza que deseja excluir esta venda?
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleCloseDeleteDialog} color="primary">
-            Cancelar
-          </Button>
-          <Button onClick={handleDeleteConfirmed} color="secondary" autoFocus>
-            Excluir
-          </Button>
-        </DialogActions>
-      </Dialog>
+                  {selectedSale === sale && (
+                    <TableRow>
+                      <TableCell colSpan={4}>
+                        <h3>Detalhes da Venda:</h3>
+                        <ul>
+                          {ItensSales.map((item) => (
+                            <li key={item.id}>
+                              <p>Produto: {item.nome}</p>
+                              <p>Descrição: {item.descricao}</p>
+                              <p>Preço Unitário: R$ {item.precovenda}</p>
+                              <p>Quantidade: {item.quantidade}</p>
+                            </li>
+                          ))}
+                          <li>
+                            <p>Pagamento: {sale.pagamento}</p>
+                            <p>Situação: {sale.situacao}</p>
+                            <p>Cliente: {sale.cliente_id}</p>
+                            {sale.situacao === 'Pendente' && (
+                              <IconButton onClick={() => updateSaleStatus(sale.id)}>
+                                <DoneIcon />
+                              </IconButton>
+                            )}
+                          </li>
+                        </ul>
+                      </TableCell>
+                    </TableRow>
+                  )}
+                </React.Fragment>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+        
+        <Dialog open={openDeleteDialog} onClose={handleCloseDeleteDialog}>
+          <DialogTitle>Excluir Venda</DialogTitle>
+          <DialogContent>
+            <DialogContentText>
+              Tem certeza que deseja excluir esta venda?
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleCloseDeleteDialog} color="primary">
+              Cancelar
+            </Button>
+            <Button onClick={handleDeleteConfirmed} color="secondary" autoFocus>
+              Excluir
+            </Button>
+          </DialogActions>
+        </Dialog>
 
-      <Dialog open={openUptadeDialog} onClose={handleCloseUptadeDialog}>
-        <DialogTitle>Atualizar Venda</DialogTitle>
-        <DialogContent>
-          <DialogContentText>
-            Tem certeza que deseja Atualizar esta venda?
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleCloseDeleteDialog} color="primary">
-            Cancelar
-          </Button>
-          <Button onClick={handleUptadeConfirmed} color="secondary" autoFocus>
-            Atualizar
-          </Button>
-        </DialogActions>
-      </Dialog>
-    </Grid>
+        <Dialog open={openUpdateDialog} onClose={handleCloseUpdateDialog}>
+          <DialogTitle>Atualizar Venda</DialogTitle>
+          <DialogContent>
+            <DialogContentText>
+              Tem certeza que deseja Atualizar esta venda?
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleCloseUpdateDialog} color="primary">
+              Cancelar
+            </Button>
+            <Button onClick={handleUpdateConfirmed} color="secondary" autoFocus>
+              Atualizar
+            </Button>
+          </DialogActions>
+        </Dialog>
+      </Grid>
     </Grid>
   );
 }

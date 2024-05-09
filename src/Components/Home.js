@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { Grid, Typography, CircularProgress, IconButton } from '@mui/material';
+import { Grid, Typography, CircularProgress, IconButton, Tooltip } from '@mui/material';
 import { motion } from 'framer-motion';
-import { BarChart, Label, People, ShoppingCart, Money } from '@mui/icons-material';
+import { BarChart, People, ShoppingCart, Money } from '@mui/icons-material';
 
 function Home() {
     const [loading, setLoading] = useState(true);
@@ -11,9 +11,11 @@ function Home() {
     const [produtosTotal, setProdutosTotal] = useState(0);
     const [clientesTotal, setClientesTotal] = useState(0);
     const [LucroTotal, setLucroTotal] = useState(0);
+
     useEffect(() => {
         fetchData();
     }, []);
+
     const fetchData = async () => {
         try {
             const [clientesResponse, vendasResponse, produtosResponse] = await Promise.all([
@@ -25,11 +27,13 @@ function Home() {
             if (!clientesResponse.ok || !vendasResponse.ok || !produtosResponse.ok) {
                 throw new Error("Erro ao buscar dados.");
             }
+            
             const [clientesData, vendasData, produtosData] = await Promise.all([
                 clientesResponse.json(),
                 vendasResponse.json(),
                 produtosResponse.json()
             ]);
+
             setClientesTotal(clientesData.length);
             setVendasCount(vendasData.length);
             setProdutosCount(produtosData.length);
@@ -40,20 +44,17 @@ function Home() {
             const produtosTotal = produtosData.reduce((total, produto) => total + (produto.Preco * produto.Quantidade), 0);
             setProdutosTotal(produtosTotal);
             
-        const idsvendas = vendasData.map(venda => venda.id) 
-        const promessasItensVendas = idsvendas.map(id => fetch(`https://sistemasdevendasgstvback.onrender.com/Vendas/${id}`));
-        const respostasItensVendas = await Promise.all(promessasItensVendas);
-        const itensVendas = await Promise.all(respostasItensVendas.map(resposta => resposta.json()));
-        const LucroTotal = itensVendas.reduce((total, itensVenda) => {
-            // Itera sobre os arrays internos e calcula o lucro de cada item de venda
-            const lucroItensVenda = itensVenda.reduce((totalItem, produto) => {
-                // Calcula o lucro para cada item de venda (preço de venda - preço de compra)
-                return totalItem + (produto.quantidade * (produto.precovenda - produto.preco));
+            const idsvendas = vendasData.map(venda => venda.id);
+            const promessasItensVendas = idsvendas.map(id => fetch(`https://sistemasdevendasgstvback.onrender.com/Vendas/${id}`));
+            const respostasItensVendas = await Promise.all(promessasItensVendas);
+            const itensVendas = await Promise.all(respostasItensVendas.map(resposta => resposta.json()));
+            const LucroTotal = itensVendas.reduce((total, itensVenda) => {
+                const lucroItensVenda = itensVenda.reduce((totalItem, produto) => {
+                    return totalItem + (produto.quantidade * (produto.precovenda - produto.preco));
+                }, 0);
+                return total + lucroItensVenda;
             }, 0);
-            // Soma o lucro dos itens de venda ao total
-            return total + lucroItensVenda;
-        }, 0);
-        setLucroTotal(LucroTotal);
+            setLucroTotal(LucroTotal);
         
             setLoading(false);
         } catch (error) {
@@ -64,36 +65,40 @@ function Home() {
 
     return (
         <Grid container justifyContent={'center'} style={{ minHeight: '100vh', position: 'relative', backgroundColor: '#c7c7c6'}}>
-        <Grid item xs={12} md={8}>
-            <Typography variant="h4" color="#c0844a" gutterBottom>Gerencie seus Produtos com Maestria</Typography>
-            <Typography variant="body1" style={{ color: '#969696', marginBottom: '30px' }}>Explore todas as possibilidades do nosso aplicativo de gestão de produtos. Aqui, você tem tudo o que precisa para manter seu negócio organizado e próspero.</Typography>
-            {loading ? (
-                <CircularProgress />
-            ) : (
-                <Grid container spacing={3} alignItems="center" justifyContent="center" style={{ padding: '20px' }}> 
-                 {[{ icon: Money, label1: `R$ ${LucroTotal.toFixed(2)}`, label2: 'Lucro' }, { icon: People, label1: clientesTotal, label2: 'Clientes' }, { icon: ShoppingCart, label1: produtosCount, label2: 'Produtos' }, { icon: BarChart, label1: vendasCount, label2: 'Vendas' }, { icon: ShoppingCart, label1: `R$ ${produtosTotal.toFixed(2)}`, label2: 'Valor Produtos'}, { icon: BarChart, label1: `R$ ${vendasTotal.toFixed(2)}`, label2: 'Total Vendas' }].map((item, index) => (
-                    <Grid item xs={12} sm={6} md={4} key={index}  >
-                     <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
-                        <IconButton style={{boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.1)', backgroundColor: '#0a2e18', width: '200px', height: '120px', marginBottom: '30px', borderRadius: '12px' }}>
-                           <Grid container direction="column" alignItems="flex-start">
-                            <Grid item>
-                             <item.icon style={{ color: '#c0844a' }} fontSize="large" />
-                              </Grid>
-                            <Grid item>
-                            <Typography variant="body1" color={'#c0844a'} fontSize={'large'} gutterBottom>{item.label1}</Typography>
-                               </Grid>
-                               <Grid item>
-                            <Typography variant="body1" color={'#c0844a'} gutterBottom>{item.label2}</Typography>
-                               </Grid>
+            <Grid item xs={12} md={8}>
+                <Typography variant="h4" color="#c0844a" gutterBottom style={{ textAlign: 'center', marginTop: '40px' }}>Gerencie seus Produtos com Maestria</Typography>
+                <Typography variant="body1" style={{ color: '#666', marginBottom: '30px', textAlign: 'center', maxWidth: '80%', margin: '0 auto' }}>Explore todas as possibilidades do nosso aplicativo de gestão de produtos. Aqui, você tem tudo o que precisa para manter seu negócio organizado e próspero.</Typography>
+                {loading ? (
+                    <Grid container justifyContent="center">
+                        <CircularProgress color="primary" />
                     </Grid>
-                </IconButton>
-            </motion.div>
-        </Grid>
-    ))}
-</Grid>
-            )}
-        </Grid>
-    </Grid>    
+                ) : (
+                    <Grid container spacing={3} alignItems="center" justifyContent="center" style={{ padding: '20px' }}>
+                        {[{ icon: Money, label1: `R$ ${LucroTotal.toFixed(2)}`, label2: 'Lucro' }, { icon: People, label1: clientesTotal, label2: 'Clientes' }, { icon: ShoppingCart, label1: produtosCount, label2: 'Produtos' }, { icon: BarChart, label1: vendasCount, label2: 'Vendas' }, { icon: ShoppingCart, label1: `R$ ${produtosTotal.toFixed(2)}`, label2: 'Valor dos Produtos'}, { icon: BarChart, label1: `R$ ${vendasTotal.toFixed(2)}`, label2: 'Total de Vendas' }].map((item, index) => (
+                            <Grid item xs={12} sm={6} md={4} key={index}>
+                                <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                                    <Tooltip title={item.label2} placement="top">
+                                        <IconButton style={{boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.2)', backgroundColor: '#fff', width: '100%', height: '100%', padding: '20px', borderRadius: '8px', border: '2px solid #c0844a' }}>
+                                            <Grid container direction="column" alignItems="center">
+                                                <Grid item style={{ marginTop: '10px' }}>
+                                                    <item.icon style={{ color: '#c0844a', fontSize: '2.5rem' }} />
+                                                </Grid>
+                                                <Grid item>
+                                                    <Typography variant="h6" color="textPrimary">{item.label1}</Typography>
+                                                </Grid>
+                                                <Grid item>
+                                                    <Typography variant="body2" color="textPrimary">{item.label2}</Typography>
+                                                </Grid>
+                                            </Grid>
+                                        </IconButton>
+                                    </Tooltip>
+                                </motion.div>
+                            </Grid>
+                        ))}
+                    </Grid>
+                )}
+            </Grid>
+        </Grid>    
     );
 }
 
