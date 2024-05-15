@@ -100,7 +100,7 @@ function SalesPage() {
 
   const fetchSaleItems = async (id) => {
     try {
-      const response = await fetch(`https://sistemasdevendasgstvback.onrender.com/Vendas/${id}`);
+      const response = await fetch(`https://sistemasdevendasgstvback.onrender.com/ItensVendas/${id}`);
       const data = await response.json();
       return data;
     } catch (error) {
