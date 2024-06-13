@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Grid, Typography, Button, TextField, Avatar } from '@mui/material';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import Auth from '../Auth/firebase';
 
 function Login({ onLoginSuccess }) {
     const [username, setUsername] = useState('');
@@ -9,12 +10,13 @@ function Login({ onLoginSuccess }) {
 
     const imageUrl = 'https://th.bing.com/th/id/R.5bbe9716682bf2d26bebe24f0e949744?rik=OOjRbE5jics8RA&riu=http%3a%2f%2fjuniordesignufpr.com.br%2fwp-content%2fuploads%2f2016%2f01%2fcarmelis.png&ehk=7%2bJu6ynJ4gfjCalKyNjw3t50YMElLaNwz1AFjFrm1UI%3d&risl=&pid=ImgRaw&r=0'; // Substitua com sua URL de imagem
 
-    const handleLogin = () => {
-        if (username === 'carmelis' && password === '12345678') {
+    const handleLogin = async () => {
+        try {
+            await Auth.signInWithEmailAndPassword(username, password);
             toast.success("Login bem-sucedido!");
             onLoginSuccess();
-        } else {
-            toast.error("Nome de usuário ou senha incorretos!");
+        } catch (error) {
+            toast.error(error.message);
         }
     };
 
