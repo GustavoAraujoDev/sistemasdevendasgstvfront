@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Grid, Typography, Button, TextField, Avatar } from '@mui/material';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import Auth from '../Auth/firebase';
+import { auth } from '../Auth/firebase';
 
 function Login({ onLoginSuccess }) {
     const [username, setUsername] = useState('');
@@ -12,7 +12,7 @@ function Login({ onLoginSuccess }) {
 
     const handleLogin = async () => {
         try {
-            await Auth.signInWithEmailAndPassword(username, password);
+            await auth.signInWithEmailAndPassword(username, password);
             toast.success("Login bem-sucedido!");
             onLoginSuccess();
         } catch (error) {
