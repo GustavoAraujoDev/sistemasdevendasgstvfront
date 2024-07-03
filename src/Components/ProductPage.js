@@ -47,7 +47,7 @@ function ProductsPage() {
   };
 
   useEffect(() => {
-    fetch("https://sistemasdevendasgstvback.onrender.com/Produtos")
+    fetch("https://carmelisapi.onrender.com/Produtos")
       .then((res) => res.json())
       .then((data) => {
         setProducts(data);
@@ -65,7 +65,7 @@ function ProductsPage() {
   const handleDeleteConfirmed = () => {
     setOpenDeleteDialog(false);
 
-    fetch("https://sistemasdevendasgstvback.onrender.com/Produtos", {
+    fetch("https://carmelisapi.onrender.com/Produtos", {
       method: "DELETE",
       body: JSON.stringify({
         ProductID: productIdToDelete
@@ -98,7 +98,7 @@ function ProductsPage() {
       return;
     }
 
-    fetch("https://sistemasdevendasgstvback.onrender.com/Produtos", {
+    fetch("https://carmelisapi.onrender.com/Produtos", {
       method: "POST",
       body: JSON.stringify(dataToInsert),
       headers: { "Content-Type": "application/json" },

@@ -19,9 +19,9 @@ function Home() {
     const fetchData = async () => {
         try {
             const [clientesResponse, vendasResponse, produtosResponse] = await Promise.all([
-                fetch("https://sistemasdevendasgstvback.onrender.com/Clientes"),
-                fetch("https://sistemasdevendasgstvback.onrender.com/Vendas"),
-                fetch("https://sistemasdevendasgstvback.onrender.com/Produtos")
+                fetch("https://carmelisapi.onrender.com/Clientes"),
+                fetch("https://carmelisapi.onrender.com/Vendas"),
+                fetch("https://carmelisapi.onrender.com/Produtos")
             ]);
             
             if (!clientesResponse.ok || !vendasResponse.ok || !produtosResponse.ok) {
@@ -45,7 +45,7 @@ function Home() {
             setProdutosTotal(produtosTotal);
             
             const idsvendas = vendasData.map(venda => venda.id);
-            const promessasItensVendas = idsvendas.map(id => fetch(`https://sistemasdevendasgstvback.onrender.com/Vendas/${id}`));
+            const promessasItensVendas = idsvendas.map(id => fetch(`https://carmelisapi.onrender.com/Vendas/${id}`));
             const respostasItensVendas = await Promise.all(promessasItensVendas);
             const itensVendas = await Promise.all(respostasItensVendas.map(resposta => resposta.json()));
             const LucroTotal = itensVendas.reduce((total, itensVenda) => {

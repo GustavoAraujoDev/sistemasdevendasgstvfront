@@ -45,7 +45,7 @@ function ClientsPage() {
   };
 
   useEffect(() => {
-    fetch("https://sistemasdevendasgstvback.onrender.com/Clientes")
+    fetch("https://carmelisapi.onrender.com/Clientes")
       .then((res) => res.json())
       .then((data) => {
         setClients(data);
@@ -66,7 +66,7 @@ function ClientsPage() {
   const handleDeleteConfirmed = () => {
     setOpenDeleteDialog(false);
 
-    fetch("https://sistemasdevendasgstvback.onrender.com/Clientes", {
+    fetch("https://carmelisapi.onrender.com/Clientes", {
       method: "DELETE",
       body: JSON.stringify({
         id: productIdToDelete
@@ -130,7 +130,7 @@ if (!cpfRegex.test(dataToInsert.cpf)) {
   return;
 }
 
-    fetch("https://sistemasdevendasgstvback.onrender.com/Clientes", {
+    fetch("https://carmelisapi.onrender.com/Clientes", {
       method: "POST",
       body: JSON.stringify(dataToInsert),
       headers: { "Content-Type": "application/json" },
