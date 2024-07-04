@@ -101,24 +101,17 @@ function ProductsPage() {
     }
 
     try {
-        const response = await fetch("https://carmelisapi.onrender.com/Produtos", {
+        fetch("https://carmelisapi.onrender.com/Produtos", {
             method: "POST",
             body: JSON.stringify(dataToInsert),
             headers: { "Content-Type": "application/json" },
-        });
-
-        if (!response.ok) {
-            const errorData = await response.json();
-            console.error('Server Error:', errorData);
-            toast.error(`Erro ao cadastrar produto: ${errorData.message}`);
-            return;
-        }
-
-        const data = await response.json();
+        })
+        .then(()=>{
         toast.success('Produto cadastrado com sucesso');
         setProducts([...products, data]);
         clearForm();
         handleCloseAddDialog();
+        })
     } catch (error) {
         console.error("Error:", error);
         toast.error('Erro ao cadastrar produto.');
