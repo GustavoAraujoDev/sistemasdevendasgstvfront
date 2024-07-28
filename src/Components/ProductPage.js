@@ -111,8 +111,10 @@ function ProductsPage() {
         setProducts([...products, data]);
         clearForm();
         handleCloseAddDialog();
+        console.log(dataToInsert);
         })
     } catch (error) {
+      console.log(dataToInsert);
         console.error("Error:", error);
         toast.error('Erro ao cadastrar produto.');
     }
