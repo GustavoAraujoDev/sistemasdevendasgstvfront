@@ -25,11 +25,11 @@ function ProductsPage() {
   const [openAddDialog, setOpenAddDialog] = useState(false);
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
   const [dataToInsert, setDataToInsert] = useState({
-    Nome: "",
-    Descricao: "",
-    Preco: "",
-    Quantidade: "",
-    PrecoVenda: "",
+    nome: "",
+    descricao: "",
+    preco: "",
+    quantidade: "",
+    precovenda: "",
   });
   const [productIdToDelete, setProductIdToDelete] = useState(null);
 
@@ -83,19 +83,19 @@ function ProductsPage() {
     e.preventDefault();
 
     // Validação de campos obrigatórios
-    if (!dataToInsert.Nome || !dataToInsert.Descricao || !dataToInsert.Preco || !dataToInsert.Quantidade || !dataToInsert.PrecoVenda) {
+    if (!dataToInsert.nome || !dataToInsert.descricao || !dataToInsert.preco || !dataToInsert.quantidade || !dataToInsert.precovenda) {
       toast.error('Por favor, preencha todos os campos.');
       return;
     }
 
     // Validação de formato
-    if (isNaN(dataToInsert.Preco) || isNaN(dataToInsert.Quantidade) || isNaN(dataToInsert.PrecoVenda)) {
+    if (isNaN(dataToInsert.preco) || isNaN(dataToInsert.quantidade) || isNaN(dataToInsert.precovenda)) {
       toast.error('Por favor, insira valores numéricos válidos.');
       return;
     }
 
     // Validação de valores
-    if (parseFloat(dataToInsert.Preco) <= 0 || parseInt(dataToInsert.Quantidade) <= 0 || parseFloat(dataToInsert.PrecoVenda) <= 0) {
+    if (parseFloat(dataToInsert.preco) <= 0 || parseInt(dataToInsert.quantidade) <= 0 || parseFloat(dataToInsert.precovenda) <= 0) {
       toast.error('Por favor, insira valores positivos.');
       return;
     }
@@ -120,11 +120,11 @@ function ProductsPage() {
 
   const clearForm = () => {
     setDataToInsert({
-      Nome: "",
-      Descricao: "",
-      Preco: "",
-      Quantidade: "",
-      PrecoVenda: "",
+      nome: "",
+      descricao: "",
+      preco: "",
+      quantidade: "",
+      precovenda: "",
     });
   };
 
@@ -182,7 +182,7 @@ function ProductsPage() {
               <TextField
                 name="Nome"
                 label="Nome"
-                value={dataToInsert.Nome}
+                value={dataToInsert.nome}
                 onChange={handleChange}
                 fullWidth
                 margin="normal"
@@ -190,7 +190,7 @@ function ProductsPage() {
               <TextField
                 name="Descricao"
                 label="Descrição"
-                value={dataToInsert.Descricao}
+                value={dataToInsert.descricao}
                 onChange={handleChange}
                 fullWidth
                 margin="normal"
@@ -198,7 +198,7 @@ function ProductsPage() {
               <TextField
                 name="Preco"
                 label="Preço"
-                value={dataToInsert.Preco}
+                value={dataToInsert.preco}
                 onChange={handleChange}
                 fullWidth
                 margin="normal"
@@ -206,7 +206,7 @@ function ProductsPage() {
               <TextField
                 name="PrecoVenda"
                 label="Preço de Venda"
-                value={dataToInsert.PrecoVenda}
+                value={dataToInsert.precovenda}
                 onChange={handleChange}
                 fullWidth
                 margin="normal"
@@ -214,7 +214,7 @@ function ProductsPage() {
               <TextField
                 name="Quantidade"
                 label="Quantidade"
-                value={dataToInsert.Quantidade}
+                value={dataToInsert.quantidade}
                 onChange={handleChange}
                 fullWidth
                 margin="normal"
