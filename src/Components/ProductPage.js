@@ -28,8 +28,8 @@ function ProductsPage() {
     nome: "",
     descricao: "",
     preco: "",
-    quantidade: "",
     precovenda: "",
+    quantidade: "",
   });
   const [productIdToDelete, setProductIdToDelete] = useState(null);
 
@@ -125,8 +125,8 @@ function ProductsPage() {
       nome: "",
       descricao: "",
       preco: "",
-      quantidade: "",
       precovenda: "",
+      quantidade: "",
     });
   };
 
@@ -159,12 +159,12 @@ function ProductsPage() {
               </TableHead>
               <TableBody>
                 {products.map((product) => (
-                  <TableRow key={product.ProductID}>
-                    <TableCell>{product.Nome}</TableCell>
-                    <TableCell>{product.Descricao}</TableCell>
-                    <TableCell>R$ {product.Preco}</TableCell>
-                    <TableCell>R$ {product.PrecoVenda}</TableCell>
-                    <TableCell>{product.Quantidade}</TableCell>
+                  <TableRow key={product.productid}>
+                    <TableCell>{product.nome}</TableCell>
+                    <TableCell>{product.descricao}</TableCell>
+                    <TableCell>R$ {product.preco}</TableCell>
+                    <TableCell>R$ {product.precovenda}</TableCell>
+                    <TableCell>{product.quantidade}</TableCell>
                     <TableCell>
                       <IconButton aria-label="editar" component={Link} to={`/products/edit/${product.ProductID}`} style={{ marginRight: '5px' }}>
                         <EditIcon />
