@@ -12,13 +12,13 @@ import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
-import Paper from '@mui/material/Paper';
-import { Grid, Typography } from '@mui/material';
+import TableBody from '@mui/material.TableBody';
+import TableCell from '@mui/material.TableCell';
+import TableContainer from '@mui.material/TableContainer';
+import TableHead from '@mui.material.TableHead';
+import TableRow from '@mui.material.TableRow';
+import Paper from '@mui.material.Paper';
+import { Grid, Typography } from '@mui.material';
 
 function ProductsPage() {
   const [products, setProducts] = useState([]);
@@ -67,12 +67,12 @@ function ProductsPage() {
     fetch("https://carmelisapi.onrender.com/Produtos", {
       method: "DELETE",
       body: JSON.stringify({
-        ProductID: productIdToDelete
+        productid: productIdToDelete
       }),
       headers: { "Content-Type": "application/json" },
     }).then(() => {
       toast.success('Produto excluído com sucesso');
-      setProducts(products.filter(product => product.ProductID !== productIdToDelete));
+      setProducts(products.filter(product => product.productid !== productIdToDelete));
     }).catch((error) => {
       console.error("Error:", error);
     });
@@ -82,40 +82,43 @@ function ProductsPage() {
     e.preventDefault();
 
     // Validação de campos obrigatórios
-    if (!dataToInsert.nome || !dataToInsert.descricao || !dataToInsert.preco || !dataToInsert.quantidade || !dataToInsert.precovenda) {
-      toast.error('Por favor, preencha todos os campos.');
+    if (!dataToInsert.nome || !dataToInsert.preco) {
+      toast.error('Por favor, preencha os campos obrigatórios.');
       return;
     }
 
     // Validação de formato
-    if (isNaN(dataToInsert.preco) || isNaN(dataToInsert.quantidade) || isNaN(dataToInsert.precovenda)) {
+    if (isNaN(dataToInsert.preco) || (dataToInsert.precovenda && isNaN(dataToInsert.precovenda)) || (dataToInsert.quantidade && isNaN(dataToInsert.quantidade))) {
       toast.error('Por favor, insira valores numéricos válidos.');
       return;
     }
 
     // Validação de valores
-    if (parseFloat(dataToInsert.preco) <= 0 || parseInt(dataToInsert.quantidade) <= 0 || parseFloat(dataToInsert.precovenda) <= 0) {
+    if (parseFloat(dataToInsert.preco) <= 0 || (dataToInsert.quantidade && parseInt(dataToInsert.quantidade) <= 0) || (dataToInsert.precovenda && parseFloat(dataToInsert.precovenda) <= 0)) {
       toast.error('Por favor, insira valores positivos.');
       return;
     }
 
     try {
-        fetch("https://carmelisapi.onrender.com/Produtos", {
-            method: "POST",
-            body: JSON.stringify(dataToInsert),
-            headers: { "Content-Type": "application/json" },
-        })
-        .then(()=>{
+      const response = await fetch("https://carmelisapi.onrender.com/Produtos", {
+        method: "POST",
+        body: JSON.stringify(dataToInsert),
+        headers: { "Content-Type": "application/json" },
+      });
+
+      if (response.ok) {
+        const data = await response.json();
         toast.success('Produto cadastrado com sucesso');
-        setProducts([...products, dataToInsert]);
+        setProducts([...products, data]);
         clearForm();
         handleCloseAddDialog();
-        console.log(dataToInsert);
-        })
+      } else {
+        const errorData = await response.json();
+        toast.error(`Erro ao cadastrar produto: ${errorData.message}`);
+      }
     } catch (error) {
-      console.log(dataToInsert);
-        console.error("Error:", error);
-        toast.error('Erro ao cadastrar produto.');
+      console.error("Error:", error);
+      toast.error('Erro ao cadastrar produto.');
     }
   };
 
@@ -141,7 +144,7 @@ function ProductsPage() {
       <Grid item xs={12} md={10} lg={8}>
         <div style={{ marginTop: '20px', padding: '10px' }}>
           <Typography variant="h4" align="center" gutterBottom>Lista de Produtos</Typography>
-          <Button variant="contained" sx={{ backgroundColor: '#0a2e18', color: '#c0844a', marginRight: '8px' }} startIcon={<AddIcon style={{ Color: '#c0844a' }} />} onClick={handleOpenAddDialog}>
+          <Button variant="contained" sx={{ backgroundColor: '#0a2e18', color: '#c0844a', marginRight: '8px' }} startIcon={<AddIcon style={{ color: '#c0844a' }} />} onClick={handleOpenAddDialog}>
             Adicionar Produto
           </Button>
           <TableContainer component={Paper} style={{ marginTop: '20px' }}>
@@ -165,10 +168,10 @@ function ProductsPage() {
                     <TableCell>R$ {product.precovenda}</TableCell>
                     <TableCell>{product.quantidade}</TableCell>
                     <TableCell>
-                      <IconButton aria-label="editar" component={Link} to={`/products/edit/${product.ProductID}`} style={{ marginRight: '5px' }}>
+                      <IconButton aria-label="editar" component={Link} to={`/products/edit/${product.productid}`} style={{ marginRight: '5px' }}>
                         <EditIcon />
                       </IconButton>
-                      <IconButton aria-label="excluir" onClick={() => handleDelete(product.ProductID)}>
+                      <IconButton aria-label="excluir" onClick={() => handleDelete(product.productid)}>
                         <DeleteIcon />
                       </IconButton>
                     </TableCell>
