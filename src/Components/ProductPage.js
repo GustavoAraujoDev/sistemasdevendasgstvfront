@@ -41,7 +41,6 @@ function ProductsPage() {
     setOpenAddDialog(false);
   };
 
-
   const handleCloseDeleteDialog = () => {
     setOpenDeleteDialog(false);
   };
@@ -108,7 +107,7 @@ function ProductsPage() {
         })
         .then(()=>{
         toast.success('Produto cadastrado com sucesso');
-        setProducts([...products, data]);
+        setProducts([...products, dataToInsert]);
         clearForm();
         handleCloseAddDialog();
         console.log(dataToInsert);
@@ -118,7 +117,7 @@ function ProductsPage() {
         console.error("Error:", error);
         toast.error('Erro ao cadastrar produto.');
     }
-};
+  };
 
   const clearForm = () => {
     setDataToInsert({
@@ -152,7 +151,7 @@ function ProductsPage() {
                   <TableCell>Nome</TableCell>
                   <TableCell>Descrição</TableCell>
                   <TableCell>Preço</TableCell>
-                  <TableCell>PreçoVenda</TableCell>
+                  <TableCell>Preço de Venda</TableCell>
                   <TableCell>Quantidade</TableCell>
                   <TableCell>Ações</TableCell>
                 </TableRow>
@@ -182,7 +181,7 @@ function ProductsPage() {
             <DialogTitle>Adicionar Novo Produto</DialogTitle>
             <DialogContent>
               <TextField
-                name="Nome"
+                name="nome"
                 label="Nome"
                 value={dataToInsert.nome}
                 onChange={handleChange}
@@ -190,7 +189,7 @@ function ProductsPage() {
                 margin="normal"
               />
               <TextField
-                name="Descricao"
+                name="descricao"
                 label="Descrição"
                 value={dataToInsert.descricao}
                 onChange={handleChange}
@@ -198,7 +197,7 @@ function ProductsPage() {
                 margin="normal"
               />
               <TextField
-                name="Preco"
+                name="preco"
                 label="Preço"
                 value={dataToInsert.preco}
                 onChange={handleChange}
@@ -206,7 +205,7 @@ function ProductsPage() {
                 margin="normal"
               />
               <TextField
-                name="PrecoVenda"
+                name="precovenda"
                 label="Preço de Venda"
                 value={dataToInsert.precovenda}
                 onChange={handleChange}
@@ -214,7 +213,7 @@ function ProductsPage() {
                 margin="normal"
               />
               <TextField
-                name="Quantidade"
+                name="quantidade"
                 label="Quantidade"
                 value={dataToInsert.quantidade}
                 onChange={handleChange}
