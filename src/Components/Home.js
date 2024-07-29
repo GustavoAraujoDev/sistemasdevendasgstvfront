@@ -20,7 +20,7 @@ function Home() {
         try {
             const [clientesResponse, vendasResponse, produtosResponse] = await Promise.all([
                 fetch("https://carmelisapi.onrender.com/Clientes"),
-                fetch("https://carmelisapi.onrender.com/Vendas/vendas"),
+                fetch("https://carmelisapi.onrender.com/Vendas"),
                 fetch("https://carmelisapi.onrender.com/Produtos")
             ]);
             
@@ -45,7 +45,7 @@ function Home() {
             setProdutosTotal(produtosTotal);
             
             const idsvendas = vendasData.map(venda => venda.id);
-            const promessasItensVendas = idsvendas.map(id => fetch(`https://carmelisapi.onrender.com/Vendas/vendas/${id}`));
+            const promessasItensVendas = idsvendas.map(id => fetch(`https://carmelisapi.onrender.com/Vendas/itens/${id}`));
             const respostasItensVendas = await Promise.all(promessasItensVendas);
             const itensVendas = await Promise.all(respostasItensVendas.map(resposta => resposta.json()));
             const LucroTotal = itensVendas.reduce((total, itensVenda) => {
