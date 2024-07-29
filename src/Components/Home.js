@@ -20,7 +20,7 @@ function Home() {
         try {
             const [clientesResponse, vendasResponse, produtosResponse] = await Promise.all([
                 fetch("https://carmelisapi.onrender.com/Clientes"),
-                fetch("https://carmelisapi.onrender.com/Vendas"),
+                fetch("https://carmelisapi.onrender.com/Vendas/vendas"),
                 fetch("https://carmelisapi.onrender.com/Produtos")
             ]);
             
