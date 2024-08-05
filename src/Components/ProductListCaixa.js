@@ -213,7 +213,7 @@ const handleChange = (e) => {
           <List>
             {filtrarProdutos().map((produto) => (
               <ListItem key={produto.productid}>
-                <ListItemText secondaryTypographyProps={{ style: { color: '#c0844a' } }} primaryTypographyProps={{ style: { color: '#c0844a' } }} primary={produto.Nome} secondary={`R$ ${produto.PrecoVenda}`} />
+                <ListItemText secondaryTypographyProps={{ style: { color: '#c0844a' } }} primaryTypographyProps={{ style: { color: '#c0844a' } }} primary={produto.nome} secondary={`R$ ${produto.precovenda}`} />
                 <Select
                   label="Quantidade"
                   value={Quantidade}
