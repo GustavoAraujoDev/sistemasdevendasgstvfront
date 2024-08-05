@@ -221,7 +221,7 @@ const handleChange = (e) => {
                   disabled={produtosSelecionados[produto.productid]}
                   style={{ color: '#c0844a' }}
                 >
-                  {[...Array(parseInt(produto.Quantidade)).keys()].map((q) => (
+                  {[...Array(parseInt(produto.quantidade)).keys()].map((q) => (
                     <MenuItem style={{ color: '#c0844a' }} key={q + 1} value={q + 1}>{q + 1}</MenuItem>
                   ))}
                 </Select>
