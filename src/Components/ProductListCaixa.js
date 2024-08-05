@@ -188,7 +188,7 @@ const handleChange = (e) => {
 
   const filtrarProdutos = () => {
     return produtos.filter(produto =>
-      produto.Nome.toLowerCase().includes(filtroNome.toLowerCase())
+      produto.nome.toLowerCase().includes(filtroNome.toLowerCase())
     );
   };
 

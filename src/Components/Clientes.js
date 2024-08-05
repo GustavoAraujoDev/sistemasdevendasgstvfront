@@ -66,11 +66,8 @@ function ClientsPage() {
   const handleDeleteConfirmed = () => {
     setOpenDeleteDialog(false);
 
-    fetch("https://carmelisapi.onrender.com/Clientes", {
+    fetch(`https://carmelisapi.onrender.com/Clientes/${productIdToDelete}`, {
       method: "DELETE",
-      body: JSON.stringify({
-        id: productIdToDelete
-      }),
       headers: { "Content-Type": "application/json" },
     }).then(() => {
       toast.success('Cliente excluído com sucesso');
