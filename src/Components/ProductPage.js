@@ -61,14 +61,11 @@ function ProductsPage() {
     setOpenDeleteDialog(true);
   };
 
-  const handleDeleteConfirmed = () => {
+  const handleDeleteConfirmed = async () => {
     setOpenDeleteDialog(false);
 
-    fetch("https://carmelisapi.onrender.com/Produtos", {
+    await fetch(`https://carmelisapi.onrender.com/Produtos/${productIdToDelete}`, {
       method: "DELETE",
-      body: JSON.stringify({
-        productid: productIdToDelete
-      }),
       headers: { "Content-Type": "application/json" },
     }).then(() => {
       toast.success('Produto excluído com sucesso');
