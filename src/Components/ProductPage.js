@@ -64,16 +64,24 @@ function ProductsPage() {
   const handleDeleteConfirmed = async () => {
     setOpenDeleteDialog(false);
 
-    await fetch(`https://carmelisapi.onrender.com/Produtos/${productIdToDelete}`, {
-      method: "DELETE",
-      headers: { "Content-Type": "application/json" },
-    }).then(() => {
-      toast.success('Produto excluído com sucesso');
-      setProducts(products.filter(product => product.productid !== productIdToDelete));
-    }).catch((error) => {
-      console.error("Error:", error);
-    });
-  };
+    try {
+        const response = await fetch(`https://carmelisapi.onrender.com/Produtos/${productIdToDelete}`, {
+            method: "DELETE",
+            headers: { "Content-Type": "application/json" },
+        });
+
+        if (!response.ok) {
+            throw new Error('Erro ao excluir o produto');
+        }
+
+        toast.success('Produto excluído com sucesso');
+        setProducts(products.filter(product => product.productid !== productIdToDelete));
+    } catch (error) {
+        console.error("Error:", error);
+        toast.error('Erro ao excluir o produto');
+    }
+};
+
 
   const handleAddProduct = async (e) => {
     e.preventDefault();
