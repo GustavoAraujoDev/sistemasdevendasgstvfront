@@ -28,7 +28,7 @@ const Caixa = () => {
   };
 
   useEffect(() => {
-    fetch("https://sistemasdevendasgstvback.onrender.com/Produtos")
+    fetch("https://carmelisapi.onrender.com/Produtos")
       .then((res) => res.json())
       .then((data) => {
         setProdutos(data);
@@ -37,7 +37,7 @@ const Caixa = () => {
         console.error(err);
       });
 
-    fetch("https://sistemasdevendasgstvback.onrender.com/Clientes")
+    fetch("https://carmelisapi.onrender.com/Clientes")
       .then((res) => res.json())
       .then((data) => {
         setcliente(data);
@@ -49,7 +49,7 @@ const Caixa = () => {
 
   const finalizarCompra = () => {
       const items = carrinho.map(item => ({
-        product_id: item.produto.ProductID,
+        productid: item.produto.productid,
         nome: item.produto.Nome,
         descricao: item.produto.Descricao,
         preco: item.produto.Preco,
@@ -78,7 +78,7 @@ const Caixa = () => {
     console.log(items);
     console.log(totalPrice);
     toast.isActive('Compra finalizada com Sucesso')
-    fetch("https://sistemasdevendasgstvback.onrender.com/Vendas", {
+    fetch("https://carmelisapi.onrender.com/Vendas", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
@@ -110,22 +110,22 @@ const Caixa = () => {
   
   const atualizarQuantidadeProdutos = () => {
     carrinho.forEach((item) => {
-      const produtoId = item.produto.ProductID;
+      const produtoId = item.produto.productid;
       const quantidadeVendida = item.quantidade;
       const novaQuantidade = item.produto.Quantidade - quantidadeVendida;
 
       if(novaQuantidade === 0){
-        fetch("https://sistemasdevendasgstvback.onrender.com/Produtos", {
+        fetch("https://carmelisapi.onrender.com/Produtos", {
           method: "DELETE",
           headers: {
             "Content-Type": "application/json"
           },
           body: JSON.stringify({
-            ProductID: produtoId
+            productid: produtoId
           })
         })
       } else {
-      fetch("https://sistemasdevendasgstvback.onrender.com/Produtos", {
+      fetch("https://carmelisapi.onrender.com/Produtos", {
       method: "PUT",
       headers: {
         "Content-Type": "application/json"
@@ -136,7 +136,7 @@ const Caixa = () => {
         Preco: item.produto.Preco,
         PrecoVenda: item.produto.PrecoVenda,
         Quantidade: novaQuantidade,
-        ProductID: produtoId
+        productid: produtoId
       })
     })
    }
@@ -151,10 +151,10 @@ const handleChange = (e) => {
 };
 
   const adicionarAoCarrinho = (produto, quantidade) => {
-    const itemExistente = carrinho.find((item) => item.produto.ProductID === produto.ProductID);
+    const itemExistente = carrinho.find((item) => item.produto.productid === produto.productid);
     if (itemExistente) {
       const novoCarrinho = carrinho.map((item) =>
-        item.produto.ProductID === produto.ProductID ? { ...item, quantidade: item.quantidade + quantidade } : item
+        item.produto.productid === produto.productid ? { ...item, quantidade: item.quantidade + quantidade } : item
       );
       setCarrinho(novoCarrinho);
       toast.success('item atualizado com sucesso')
@@ -165,15 +165,15 @@ const handleChange = (e) => {
     // Atualizar produtos selecionados
     const novoProdutosSelecionados = { ...produtosSelecionados };
     if (quantidade >= produto.Quantidade) {
-      novoProdutosSelecionados[produto.ProductID] = true;
+      novoProdutosSelecionados[produto.productid] = true;
     } else {
-      delete novoProdutosSelecionados[produto.ProductID];
+      delete novoProdutosSelecionados[produto.productid];
     }
     setProdutosSelecionados(novoProdutosSelecionados);
   };
 
   const removerDoCarrinho = (produtoId) => {
-    const novoCarrinho = carrinho.filter((item) => item.produto.ProductID !== produtoId);
+    const novoCarrinho = carrinho.filter((item) => item.produto.productid !== produtoId);
     setCarrinho(novoCarrinho);
     // Habilitar produto novamente
     const novoProdutosSelecionados = { ...produtosSelecionados };
@@ -212,13 +212,13 @@ const handleChange = (e) => {
           />
           <List>
             {filtrarProdutos().map((produto) => (
-              <ListItem key={produto.ProductID}>
+              <ListItem key={produto.productid}>
                 <ListItemText secondaryTypographyProps={{ style: { color: '#c0844a' } }} primaryTypographyProps={{ style: { color: '#c0844a' } }} primary={produto.Nome} secondary={`R$ ${produto.PrecoVenda}`} />
                 <Select
                   label="Quantidade"
                   value={Quantidade}
                   onChange={(event) => setQuantidade(event.target.value)}
-                  disabled={produtosSelecionados[produto.ProductID]}
+                  disabled={produtosSelecionados[produto.productid]}
                   style={{ color: '#c0844a' }}
                 >
                   {[...Array(parseInt(produto.Quantidade)).keys()].map((q) => (
@@ -238,11 +238,11 @@ const handleChange = (e) => {
           <Typography variant="h5" style={{ color: '#c0844a' }} >Carrinho</Typography>
           <List>
             {carrinho.map((item) => (
-              <div key={item.produto.ProductID}>
+              <div key={item.produto.productid}>
                 <ListItem>
                   <ListItemText secondaryTypographyProps={{ style: { color: '#c0844a' } }} primaryTypographyProps={{ style: { color: '#c0844a' } }} primary={item.produto.Nome} secondary={`Quantidade: ${item.quantidade}`} />
                   <ListItemText primaryTypographyProps={{ style: { color: '#c0844a' } }} primary={`Total: R$ ${parseFloat(item.produto.PrecoVenda) * item.quantidade}`} />
-                  <IconButton onClick={() => removerDoCarrinho(item.produto.ProductID)} edge="end" aria-label="remover">
+                  <IconButton onClick={() => removerDoCarrinho(item.produto.productid)} edge="end" aria-label="remover">
                     <DeleteIcon style={{ color: '#c0844a' }}/>
                   </IconButton>
                 </ListItem>
