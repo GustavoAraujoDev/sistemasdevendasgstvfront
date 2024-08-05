@@ -161,6 +161,7 @@ const handleChange = (e) => {
     } else {
       setCarrinho([...carrinho, { produto, quantidade }]);
       toast.dark('item adicionado com sucesso')
+      console.log(carrinho);
     }
     // Atualizar produtos selecionados
     const novoProdutosSelecionados = { ...produtosSelecionados };
@@ -183,7 +184,7 @@ const handleChange = (e) => {
   };
 
   const calcularTotal = () => {
-    return carrinho.reduce((total, item) => total + (parseFloat(item.produto.PrecoVenda) * item.quantidade), 0);
+    return carrinho.reduce((total, item) => total + (parseFloat(item.produto.precovenda) * item.quantidade), 0);
   };
 
   const filtrarProdutos = () => {
