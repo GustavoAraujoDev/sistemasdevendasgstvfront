@@ -241,7 +241,7 @@ const handleChange = (e) => {
               <div key={item.produto.productid}>
                 <ListItem>
                   <ListItemText secondaryTypographyProps={{ style: { color: '#c0844a' } }} primaryTypographyProps={{ style: { color: '#c0844a' } }} primary={item.produto.nome} secondary={`Quantidade: ${item.quantidade}`} />
-                  <ListItemText primaryTypographyProps={{ style: { color: '#c0844a' } }} primary={`Total: R$ ${parseFloat(item.produto.precovenda) * item.quantidade}`} />
+                  <ListItemText primaryTypographyProps={{ style: { color: '#c0844a' } }} primary={`Total: R$ ${parseFloat(item.produto.precovenda) * item.Quantidade}`} />
                   <IconButton onClick={() => removerDoCarrinho(item.produto.productid)} edge="end" aria-label="remover">
                     <DeleteIcon style={{ color: '#c0844a' }}/>
                   </IconButton>
