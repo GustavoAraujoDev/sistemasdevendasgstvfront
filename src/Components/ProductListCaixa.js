@@ -54,7 +54,7 @@ const Caixa = () => {
         descricao: item.produto.descricao,
         preco: item.produto.preco,
         precovenda: item.produto.precovenda,
-        quantidade: item.produto.quantidade
+        quantidade: item.quantidade
       }));
 
       const totalPrice = calcularTotal();
@@ -241,8 +241,8 @@ const handleChange = (e) => {
             {carrinho.map((item) => (
               <div key={item.produto.productid}>
                 <ListItem>
-                  <ListItemText secondaryTypographyProps={{ style: { color: '#c0844a' } }} primaryTypographyProps={{ style: { color: '#c0844a' } }} primary={item.produto.nome} secondary={`Quantidade: ${item.produto.quantidade}`} />
-                  <ListItemText primaryTypographyProps={{ style: { color: '#c0844a' } }} primary={`Total: R$ ${parseFloat(item.produto.precovenda) * item.produto.quantidade}`} />
+                  <ListItemText secondaryTypographyProps={{ style: { color: '#c0844a' } }} primaryTypographyProps={{ style: { color: '#c0844a' } }} primary={item.produto.nome} secondary={`Quantidade: ${item.quantidade}`} />
+                  <ListItemText primaryTypographyProps={{ style: { color: '#c0844a' } }} primary={`Total: R$ ${parseFloat(item.produto.precovenda) * item.quantidade}`} />
                   <IconButton onClick={() => removerDoCarrinho(item.produto.productid)} edge="end" aria-label="remover">
                     <DeleteIcon style={{ color: '#c0844a' }}/>
                   </IconButton>
