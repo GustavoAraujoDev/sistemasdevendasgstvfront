@@ -116,14 +116,11 @@ const Caixa = () => {
       const novaQuantidade = item.produto.Quantidade - quantidadeVendida;
 
       if(novaQuantidade === 0){
-        fetch("https://carmelisapi.onrender.com/Produtos", {
+        fetch(`https://carmelisapi.onrender.com/Produtos/${produtoId}`, {
           method: "DELETE",
           headers: {
             "Content-Type": "application/json"
           },
-          body: JSON.stringify({
-            productid: produtoId
-          })
         })
       } else {
       fetch(`https://carmelisapi.onrender.com/Produtos/${produtoId}`, {
