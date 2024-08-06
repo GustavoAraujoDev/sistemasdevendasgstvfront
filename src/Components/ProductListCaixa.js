@@ -126,7 +126,7 @@ const Caixa = () => {
           })
         })
       } else {
-      fetch("https://carmelisapi.onrender.com/Produtos", {
+      fetch(`https://carmelisapi.onrender.com/Produtos/${produtoId}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json"
@@ -136,8 +136,7 @@ const Caixa = () => {
         descricao: item.produto.descricao,
         preco: item.produto.preco,
         precovenda: item.produto.precovenda,
-        Quantidade: novaQuantidade,
-        productid: produtoId
+        quantidade: novaQuantidade
       })
     })
    }
