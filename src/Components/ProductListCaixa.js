@@ -85,10 +85,11 @@ const Caixa = () => {
       },
       body: JSON.stringify({
         items: items,
-        totalPrice: totalPrice,
+        totalprice: totalPrice,
+        datavenda: new Date(),
         pagamento: dataToInsert.pagamento,
         situacao: dataToInsert.situacao,
-        id: selectedClient
+        clienteid: selectedClient
       })
     })
     .then(response => response.json())
