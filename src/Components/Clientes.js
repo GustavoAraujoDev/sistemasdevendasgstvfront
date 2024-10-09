@@ -46,7 +46,7 @@ function ClientsPage() {
   };
 
   useEffect(() => {
-    fetch("https://localhost:3000/Clientes")
+    fetch("http://localhost:3000/Clientes")
       .then((res) => res.json())
       .then((data) => {
         setClients(data);
@@ -67,7 +67,7 @@ function ClientsPage() {
   const handleDeleteConfirmed = () => {
     setOpenDeleteDialog(false);
 
-    fetch(`https://localhost:3000/Clientes/${productIdToDelete}`, {
+    fetch(`http://localhost:3000/Clientes/${productIdToDelete}`, {
       method: "DELETE",
       headers: { "Content-Type": "application/json" },
     }).then(() => {
@@ -128,7 +128,7 @@ if (!cpfRegex.test(dataToInsert.cpf)) {
   return;
 }
 
-    fetch("https://localhost:3000/Clientes", {
+    fetch("http://localhost:3000/Clientes", {
       method: "POST",
       body: JSON.stringify(dataToInsert),
       headers: { "Content-Type": "application/json" },

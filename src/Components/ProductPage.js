@@ -47,7 +47,7 @@ function ProductsPage() {
   };
 
   useEffect(() => {
-    fetch("https://localhost:3000/Produtos")
+    fetch("http://localhost:3000/Produtos")
       .then((res) => res.json())
       .then((data) => {
         setProducts(data);
@@ -66,7 +66,7 @@ function ProductsPage() {
     setOpenDeleteDialog(false);
 
     try {
-        const response = await fetch(`https://localhost:3000/Produtos/${productIdToDelete}`, {
+        const response = await fetch(`http://localhost:3000/Produtos/${productIdToDelete}`, {
             method: "DELETE",
             headers: { "Content-Type": "application/json" },
         });
@@ -106,7 +106,7 @@ function ProductsPage() {
     }
 
     try {
-      const response = await fetch("https://localhost:3000/Produtos", {
+      const response = await fetch("http://localhost:3000/Produtos", {
         method: "POST",
         body: JSON.stringify(dataToInsert),
         headers: { "Content-Type": "application/json" },
