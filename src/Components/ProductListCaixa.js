@@ -28,7 +28,7 @@ const Caixa = () => {
   };
 
   useEffect(() => {
-    fetch("https://carmelisapi.onrender.com/Produtos")
+    fetch("https://localhost:3000/Produtos")
       .then((res) => res.json())
       .then((data) => {
         setProdutos(data);
@@ -37,7 +37,7 @@ const Caixa = () => {
         console.error(err);
       });
 
-    fetch("https://carmelisapi.onrender.com/Clientes")
+    fetch("https://localhost:3000/Clientes")
       .then((res) => res.json())
       .then((data) => {
         setcliente(data);
@@ -78,7 +78,7 @@ const Caixa = () => {
     console.log(items);
     console.log(totalPrice);
     toast.isActive('Compra finalizada com Sucesso')
-    fetch("https://carmelisapi.onrender.com/Vendas", {
+    fetch("https://localhost:3000/Vendas", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
@@ -116,14 +116,14 @@ const Caixa = () => {
       const novaQuantidade = item.produto.Quantidade - quantidadeVendida;
 
       if(novaQuantidade === 0){
-        fetch(`https://carmelisapi.onrender.com/Produtos/${produtoId}`, {
+        fetch(`https://localhost:3000/Produtos/${produtoId}`, {
           method: "DELETE",
           headers: {
             "Content-Type": "application/json"
           },
         })
       } else {
-      fetch(`https://carmelisapi.onrender.com/Produtos/${produtoId}`, {
+      fetch(`https://localhost:3000/Produtos/${produtoId}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json"

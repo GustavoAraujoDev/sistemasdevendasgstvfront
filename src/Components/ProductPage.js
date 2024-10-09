@@ -25,6 +25,7 @@ function ProductsPage() {
   const [openAddDialog, setOpenAddDialog] = useState(false);
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
   const [dataToInsert, setDataToInsert] = useState({
+    productid: "",
     nome: "",
     descricao: "",
     preco: "",
@@ -46,7 +47,7 @@ function ProductsPage() {
   };
 
   useEffect(() => {
-    fetch("https://carmelisapi.onrender.com/Produtos")
+    fetch("https://localhost:3000/Produtos")
       .then((res) => res.json())
       .then((data) => {
         setProducts(data);
@@ -65,7 +66,7 @@ function ProductsPage() {
     setOpenDeleteDialog(false);
 
     try {
-        const response = await fetch(`https://carmelisapi.onrender.com/Produtos/${productIdToDelete}`, {
+        const response = await fetch(`https://localhost:3000/Produtos/${productIdToDelete}`, {
             method: "DELETE",
             headers: { "Content-Type": "application/json" },
         });
@@ -105,7 +106,7 @@ function ProductsPage() {
     }
 
     try {
-      const response = await fetch("https://carmelisapi.onrender.com/Produtos", {
+      const response = await fetch("https://localhost:3000/Produtos", {
         method: "POST",
         body: JSON.stringify(dataToInsert),
         headers: { "Content-Type": "application/json" },
@@ -129,6 +130,7 @@ function ProductsPage() {
 
   const clearForm = () => {
     setDataToInsert({
+      productid: "",
       nome: "",
       descricao: "",
       preco: "",
@@ -188,6 +190,14 @@ function ProductsPage() {
           <Dialog open={openAddDialog} onClose={handleCloseAddDialog}>
             <DialogTitle>Adicionar Novo Produto</DialogTitle>
             <DialogContent>
+            <TextField
+                name="productid"
+                label="Productid"
+                value={dataToInsert.productid}
+                onChange={handleChange}
+                fullWidth
+                margin="normal"
+              />
               <TextField
                 name="nome"
                 label="Nome"

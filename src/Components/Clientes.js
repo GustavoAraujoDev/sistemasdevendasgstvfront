@@ -25,6 +25,7 @@ function ClientsPage() {
   const [openAddDialog, setOpenAddDialog] = useState(false);
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
   const [dataToInsert, setDataToInsert] = useState({
+    clientid: "",
     nome: "",
     email: "",
     cpf: "",
@@ -45,7 +46,7 @@ function ClientsPage() {
   };
 
   useEffect(() => {
-    fetch("https://carmelisapi.onrender.com/Clientes")
+    fetch("https://localhost:3000/Clientes")
       .then((res) => res.json())
       .then((data) => {
         setClients(data);
@@ -66,7 +67,7 @@ function ClientsPage() {
   const handleDeleteConfirmed = () => {
     setOpenDeleteDialog(false);
 
-    fetch(`https://carmelisapi.onrender.com/Clientes/${productIdToDelete}`, {
+    fetch(`https://localhost:3000/Clientes/${productIdToDelete}`, {
       method: "DELETE",
       headers: { "Content-Type": "application/json" },
     }).then(() => {
@@ -127,7 +128,7 @@ if (!cpfRegex.test(dataToInsert.cpf)) {
   return;
 }
 
-    fetch("https://carmelisapi.onrender.com/Clientes", {
+    fetch("https://localhost:3000/Clientes", {
       method: "POST",
       body: JSON.stringify(dataToInsert),
       headers: { "Content-Type": "application/json" },
@@ -145,6 +146,7 @@ if (!cpfRegex.test(dataToInsert.cpf)) {
 
   const clearForm = () => {
     setDataToInsert({
+      clientid: "",
       nome: "",
       email: "",
       cpf: "",
@@ -201,6 +203,14 @@ if (!cpfRegex.test(dataToInsert.cpf)) {
         <Dialog open={openAddDialog} onClose={handleCloseAddDialog}>
           <DialogTitle>Adicionar Novo Cliente</DialogTitle>
           <DialogContent>
+          <TextField
+              name="clientid"
+              label="Clientid"
+              value={dataToInsert.clientid}
+              onChange={handleChange}
+              fullWidth
+              margin="normal"
+            />
             <TextField
               name="nome"
               label="Nome"
