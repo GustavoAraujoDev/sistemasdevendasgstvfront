@@ -34,27 +34,23 @@ function ProductsPage() {
   });
   const [productIdToDelete, setProductIdToDelete] = useState(null);
 
-  const handleOpenAddDialog = () => {
-    setOpenAddDialog(true);
-  };
-
-  const handleCloseAddDialog = () => {
-    setOpenAddDialog(false);
-  };
-
-  const handleCloseDeleteDialog = () => {
-    setOpenDeleteDialog(false);
-  };
+  const handleOpenAddDialog = () => setOpenAddDialog(true);
+  const handleCloseAddDialog = () => setOpenAddDialog(false);
+  const handleCloseDeleteDialog = () => setOpenDeleteDialog(false);
 
   useEffect(() => {
-    fetch("http://localhost:3000/Produtos")
-      .then((res) => res.json())
-      .then((data) => {
+    const fetchProducts = async () => {
+      try {
+        const response = await fetch("http://localhost:3000/Produtos");
+        if (!response.ok) throw new Error("Erro ao buscar produtos");
+        const data = await response.json();
         setProducts(data);
-      })
-      .catch((err) => {
-        console.error(err);
-      });
+      } catch (err) {
+        console.error("Erro ao buscar dados:", err);
+        toast.error('Erro ao buscar dados.');
+      }
+    };
+    fetchProducts();
   }, []);
 
   const handleDelete = (id) => {
@@ -66,23 +62,20 @@ function ProductsPage() {
     setOpenDeleteDialog(false);
 
     try {
-        const response = await fetch(`http://localhost:3000/Produtos/${productIdToDelete}`, {
-            method: "DELETE",
-            headers: { "Content-Type": "application/json" },
-        });
+      const response = await fetch( `http://localhost:3000/Produtos/${productIdToDelete}`, {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+      });
 
-        if (!response.ok) {
-            throw new Error('Erro ao excluir o produto');
-        }
+      if (!response.ok) throw new Error('Erro ao excluir o produto');
 
-        toast.success('Produto excluído com sucesso');
-        setProducts(products.filter(product => product.productid !== productIdToDelete));
+      toast.success('Produto excluído com sucesso');
+      setProducts(products.filter(product => product.productid !== productIdToDelete));
     } catch (error) {
-        console.error("Error:", error);
-        toast.error('Erro ao excluir o produto');
+      console.error("Error:", error);
+      toast.error('Erro ao excluir o produto');
     }
-};
-
+  };
 
   const handleAddProduct = async (e) => {
     e.preventDefault();
@@ -167,30 +160,36 @@ function ProductsPage() {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {products?.map((product) => (
-                  <TableRow key={product.productid}>
-                    <TableCell>{product.nome}</TableCell>
-                    <TableCell>{product.descricao}</TableCell>
-                    <TableCell>R$ {product.preco}</TableCell>
-                    <TableCell>R$ {product.precovenda}</TableCell>
-                    <TableCell>{product.quantidade}</TableCell>
-                    <TableCell>
-                      <IconButton aria-label="editar" component={Link} to={`/products/edit/${product.productid}`} style={{ marginRight: '5px' }}>
-                        <EditIcon />
-                      </IconButton>
-                      <IconButton aria-label="excluir" onClick={() => handleDelete(product.productid)}>
-                        <DeleteIcon />
-                      </IconButton>
-                    </TableCell>
+                {Array.isArray(products) && products.length > 0 ? (
+                    products.map((product) => (
+                      <TableRow key={product.productid}>
+                        <TableCell>{product.nome}</TableCell>
+                        <TableCell>{product.descricao}</TableCell>
+                        <TableCell>R$ {parseFloat(product.preco).toFixed(2)}</TableCell>
+                        <TableCell>R$ {parseFloat(product.precovenda).toFixed(2)}</TableCell>
+                        <TableCell>{product.quantidade}</TableCell>
+                        <TableCell>
+                          <IconButton aria-label="editar" component={Link} to={`/products/edit/${product.productid}`} style={{ marginRight: '5px' }}>
+                            <EditIcon />
+                          </IconButton>
+                          <IconButton aria-label="excluir" onClick={() => handleDelete(product.productid)}>
+                            <DeleteIcon />
+                          </IconButton>
+                        </TableCell>
+                      </TableRow>
+                    ))
+                ) : (
+                  <TableRow>
+                    <TableCell colSpan={6} align="center">Nenhum produto encontrado</TableCell>
                   </TableRow>
-                )) || []}
+                )}
               </TableBody>
             </Table>
           </TableContainer>
           <Dialog open={openAddDialog} onClose={handleCloseAddDialog}>
             <DialogTitle>Adicionar Novo Produto</DialogTitle>
             <DialogContent>
-            <TextField
+              <TextField
                 name="productid"
                 label="Productid"
                 value={dataToInsert.productid}
