@@ -44,7 +44,13 @@ function ProductsPage() {
         const response = await fetch("http://localhost:3000/Produtos");
         if (!response.ok) throw new Error("Erro ao buscar produtos");
         const data = await response.json();
-        setProducts(data);
+       // Converte o objeto de produtos em um array
+      const productsArray = Object.keys(data).map(key => ({
+        productid: key,
+        ...data[key]
+      }));
+
+      setProducts(productsArray);
       } catch (err) {
         console.error("Erro ao buscar dados:", err);
         toast.error('Erro ao buscar dados.');
