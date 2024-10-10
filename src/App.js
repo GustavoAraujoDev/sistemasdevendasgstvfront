@@ -14,9 +14,7 @@ function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
-    // Verifica se o usuário está logado ao carregar a página
     const storedLoginStatus = localStorage.getItem('isLoggedIn');
-    console.log('Stored login status:', storedLoginStatus); // Log do status
     if (storedLoginStatus === 'true') {
       setIsLoggedIn(true);
     }
@@ -25,13 +23,11 @@ function App() {
   const handleLoginSuccess = () => {
     setIsLoggedIn(true);
     localStorage.setItem('isLoggedIn', 'true');
-    console.log('Login successful, user is logged in.'); // Log do sucesso do login
   };
 
   const handleLogoutSuccess = () => {
     setIsLoggedIn(false);
     localStorage.removeItem('isLoggedIn');
-    console.log('Logout successful, user is logged out.'); // Log do sucesso do logout
   };
 
   return (
@@ -40,11 +36,12 @@ function App() {
       {isLoggedIn && <Sidebar onLogout={handleLogoutSuccess} />}
       <Routes>
         <Route path="/" element={isLoggedIn ? <Home /> : <Navigate to="/login" />} />
-        <Route path="/ProductPage" element={isLoggedIn ? <ProductsPage /> : <Navigate to="/login" />} />
-        <Route path="/CaixaPage" element={isLoggedIn ? <CaixaPage /> : <Navigate to="/login" />} />
-        <Route path="/Vendas" element={isLoggedIn ? <Vendas /> : <Navigate to="/login" />} />
-        <Route path="/Clientes" element={isLoggedIn ? <Clientes /> : <Navigate to="/login" />} />
         <Route path="/login" element={<Login onLoginSuccess={handleLoginSuccess} />} />
+        {/* Comente as rotas a seguir para testar apenas o login */}
+        {/* <Route path="/ProductPage" element={<ProductsPage />} />
+        <Route path="/CaixaPage" element={<CaixaPage />} />
+        <Route path="/Vendas" element={<Vendas />} />
+        <Route path="/Clientes" element={<Clientes />} /> */}
       </Routes>
     </Router>
   );
