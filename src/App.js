@@ -13,12 +13,7 @@ function App() {
     <Router>
       <Sidebar /> {/* Exiba o Sidebar sem condições de login */}
       <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/login" element={<Login />} />
         <Route path="/ProductPage" element={<ProductsPage />} />
-        <Route path="/CaixaPage" element={<CaixaPage />} />
-        <Route path="/Vendas" element={<Vendas />} />
-        <Route path="/Clientes" element={<Clientes />} />
       </Routes>
     </Router>
   );
