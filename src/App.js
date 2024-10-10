@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import Sidebar from './Components/SideBar';
-import Header from './Components/Header';
+import Header from './Components/Header'; // Se você precisar do Header, não esqueça de adicioná-lo ao layout
 import ProductsPage from './Components/ProductPage';
 import Home from './Components/Home';
-import CaixaPage from '../src/Components/ProductListCaixa';
-import Vendas from '../src/Components/Vendas';
-import Clientes from '../src/Components/Clientes';
-import Login from '../src/Components/Login';
+import CaixaPage from './Components/ProductListCaixa';
+import Vendas from './Components/Vendas';
+import Clientes from './Components/Clientes';
+import Login from './Components/Login';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -25,7 +25,7 @@ function App() {
   const handleLoginSuccess = () => {
     setIsLoggedIn(true);
     // Armazena o estado de login no LocalStorage ao fazer login
-    localStorage.setItem('isLoggedIn', true);
+    localStorage.setItem('isLoggedIn', 'true');
   };
 
   const handleLogoutSuccess = () => {
@@ -37,26 +37,14 @@ function App() {
   return (
     <Router>
       <ToastContainer />
+      {isLoggedIn && <Sidebar onLogout={handleLogoutSuccess} />}
       <Routes>
-        <Route 
-          path="*"
-          element={
-            isLoggedIn ? (
-              <div style={{ display: 'flex', flexGrow: 1 }}>
-                <Sidebar onLogout={handleLogoutSuccess}/>
-                <Routes>
-                  <Route path="/" element={<Home />} />
-                  <Route path="/ProductPage" element={<ProductsPage />} />
-                  <Route path="/CaixaPage" element={<CaixaPage />} />
-                  <Route path="/Vendas" element={<Vendas />} />
-                  <Route path="/Clientes" element={<Clientes />} />
-                </Routes>
-              </div>
-            ) : (
-              <Login onLoginSuccess={handleLoginSuccess} />
-            )
-          }
-        />
+        <Route path="/" element={isLoggedIn ? <Home /> : <Navigate to="/login" />} />
+        <Route path="/ProductPage" element={isLoggedIn ? <ProductsPage /> : <Navigate to="/login" />} />
+        <Route path="/CaixaPage" element={isLoggedIn ? <CaixaPage /> : <Navigate to="/login" />} />
+        <Route path="/Vendas" element={isLoggedIn ? <Vendas /> : <Navigate to="/login" />} />
+        <Route path="/Clientes" element={isLoggedIn ? <Clientes /> : <Navigate to="/login" />} />
+        <Route path="/login" element={<Login onLoginSuccess={handleLoginSuccess} />} />
       </Routes>
     </Router>
   );
