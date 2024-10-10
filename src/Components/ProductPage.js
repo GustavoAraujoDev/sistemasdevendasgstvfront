@@ -167,7 +167,7 @@ function ProductsPage() {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {products.map((product) => (
+                {products?.map((product) => (
                   <TableRow key={product.productid}>
                     <TableCell>{product.nome}</TableCell>
                     <TableCell>{product.descricao}</TableCell>
@@ -183,7 +183,7 @@ function ProductsPage() {
                       </IconButton>
                     </TableCell>
                   </TableRow>
-                ))}
+                )) || []}
               </TableBody>
             </Table>
           </TableContainer>
