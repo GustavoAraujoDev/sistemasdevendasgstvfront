@@ -46,15 +46,24 @@ function ClientsPage() {
   };
 
   useEffect(() => {
-    fetch("http://localhost:3000/Clientes")
-      .then((res) => res.json())
-      .then((data) => {
-        setClients(data);
-        console.log(data);
-      })
-      .catch((err) => {
-        console.error(err);
-      });
+    const fetchClients = async () => {
+      try {
+        const response = await fetch("http://localhost:3000/Clientes");
+        if (!response.ok) throw new Error("Erro ao buscar Clientes");
+        const data = await response.json();
+       // Converte o objeto de produtos em um array
+      const ClientsArray = Object.keys(data).map(key => ({
+        clientid: key,
+        ...data[key]
+      }));
+
+      setClients(ClientsArray);
+      } catch (err) {
+        console.error("Erro ao buscar dados:", err);
+        toast.error('Erro ao buscar dados.');
+      }
+    };
+    fetchClients();
   }, []);
 
   console.log(clients)
@@ -181,8 +190,10 @@ if (!cpfRegex.test(dataToInsert.cpf)) {
               </TableRow>
             </TableHead>
             <TableBody>
-              {clients.map((client) => (
-                <TableRow key={client.id}>
+              {Array.isArray(clients) && clients.length > 0 ? (
+              clients.map((client) => (
+                <TableRow key={client.clientid}>
+                  <TableCell>{client.clientid}</TableCell>
                   <TableCell>{client.nome}</TableCell>
                   <TableCell>{client.email}</TableCell>
                   <TableCell>{client.cpf}</TableCell>
@@ -196,7 +207,12 @@ if (!cpfRegex.test(dataToInsert.cpf)) {
                     </IconButton>
                   </TableCell>
                 </TableRow>
-              ))}
+              ))
+            ) : (
+              <TableRow>
+                <TableCell colSpan={6} align="center">Nenhum cliente encontrado</TableCell>
+              </TableRow>
+            )}
             </TableBody>
           </Table>
         </TableContainer>

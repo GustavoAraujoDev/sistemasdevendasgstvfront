@@ -172,6 +172,7 @@ function ProductsPage() {
                 {Array.isArray(products) && products.length > 0 ? (
                     products.map((product) => (
                       <TableRow key={product.productid}>
+                        <TableCell>{product.productid}</TableCell>
                         <TableCell>{product.nome}</TableCell>
                         <TableCell>{product.descricao}</TableCell>
                         <TableCell>R$ {parseFloat(product.preco).toFixed(2)}</TableCell>
