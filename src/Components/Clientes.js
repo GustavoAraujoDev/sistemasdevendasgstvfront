@@ -19,6 +19,8 @@ import TableRow from '@mui/material/TableRow';
 import TableCell from '@mui/material/TableCell';
 import Paper from '@mui/material/Paper';
 import { Grid } from '@mui/material';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function ClientsPage() {
   const [clients, setClients] = useState([]);
@@ -171,6 +173,7 @@ if (!cpfRegex.test(dataToInsert.cpf)) {
   };
 
   return (
+    <>
     <Grid container justifyContent="center" style={{minHeight: '100vh', marginTop: '0px', backgroundColor: '#c7c7c6', color: '#c0844a'}}>
     <Grid item xs={12} md={10} lg={8}>
       <div style={{ marginTop: '20px' }}>
@@ -288,6 +291,8 @@ if (!cpfRegex.test(dataToInsert.cpf)) {
       </div>
     </Grid>
   </Grid>
+  <ToastContainer />
+  </>
   );
 }
 

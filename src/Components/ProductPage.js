@@ -19,6 +19,8 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { Grid, Typography } from '@mui/material';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function ProductsPage() {
   const [products, setProducts] = useState([]);
@@ -149,6 +151,7 @@ function ProductsPage() {
   };
 
   return (
+    <>
     <Grid container justifyContent="center" style={{ minHeight: '100vh', marginTop: '0px', backgroundColor: '#c7c7c6', color: '#c0844a' }}>
       <Grid item xs={12} md={10} lg={8}>
         <div style={{ marginTop: '20px', padding: '10px' }}>
@@ -276,6 +279,8 @@ function ProductsPage() {
         </div>
       </Grid>
     </Grid>
+    <ToastContainer />
+    </>
   );
 }
 
