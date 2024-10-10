@@ -36,7 +36,6 @@ function App() {
 
   return (
     <Router>
-      <ToastContainer />
       <Routes>
         <Route 
           path="*"
@@ -50,6 +49,7 @@ function App() {
                   <Route path="/CaixaPage" element={<CaixaPage />} />
                   <Route path="/Vendas" element={<Vendas />} />
                   <Route path="/Clientes" element={<Clientes />} />
+                  <ToastContainer />
                 </Routes>
               </div>
             ) : (

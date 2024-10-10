@@ -160,6 +160,7 @@ function ProductsPage() {
             <Table>
               <TableHead>
                 <TableRow>
+                  <TableCell>Produto Id</TableCell>
                   <TableCell>Nome</TableCell>
                   <TableCell>Descrição</TableCell>
                   <TableCell>Preço</TableCell>

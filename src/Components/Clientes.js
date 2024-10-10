@@ -182,6 +182,7 @@ if (!cpfRegex.test(dataToInsert.cpf)) {
           <Table aria-label="clientes">
             <TableHead>
               <TableRow>
+                <TableCell>Cliente Id</TableCell>
                 <TableCell>Nome</TableCell>
                 <TableCell>Email</TableCell>
                 <TableCell>CPF</TableCell>
