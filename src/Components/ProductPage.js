@@ -53,6 +53,9 @@ function ProductsPage() {
     fetchProducts();
   }, []);
 
+  console.log(products);
+
+
   const handleDelete = (id) => {
     setProductIdToDelete(id);
     setOpenDeleteDialog(true);
